@@ -6,9 +6,9 @@ import { Autoplay, EffectFade } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
 
 const storyImages = [
-  "/src/assets/images/aggaroud/insta/IMG-20250713-WA0004.jpg",
-  "/src/assets/images/aggaroud/insta/IMG-20250713-WA0005.jpg",
-  "/src/assets/images/aggaroud/insta/IMG-20250713-WA0008.jpg",
+  "/images/aggaroud/insta/IMG-20250713-WA0004.jpg",
+  "/images/aggaroud/insta/IMG-20250713-WA0005.jpg",
+  "/images/aggaroud/insta/IMG-20250713-WA0008.jpg",
 ]
 
 export default function OurStory() {
