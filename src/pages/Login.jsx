@@ -292,39 +292,45 @@ export default function Login() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="mt-16 pt-16 border-t border-gray-200"
+          className="mt-20 pt-16 border-t border-gray-200"
         >
-          <h3 className="font-serif text-2xl text-center mb-8 text-brand-black">
+          <h3 className="font-serif text-2xl text-center mb-12 text-brand-black tracking-wide">
             JOIN AGAAR OUD
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-12 h-12 bg-brand-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <UserPlus className="text-brand-gold" size={24} />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto -mx-8 md:-mx-16 px-4">
+            <div className="text-center group hover:-translate-y-1 transition-transform duration-300">
+              <div className="w-16 h-16 bg-brand-gold/5 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-brand-gold/10 transition-colors">
+                <UserPlus className="text-brand-gold" size={28} />
               </div>
-              <h4 className="font-semibold mb-2">Track Your Orders</h4>
-              <p className="text-sm text-gray-600">
+              <h4 className="font-serif text-lg mb-3 text-brand-black">
+                Track Your Orders
+              </h4>
+              <p className="text-sm text-gray-500 leading-relaxed max-w-[200px] mx-auto">
                 Follow your orders every step of the way
               </p>
             </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-brand-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Mail className="text-brand-gold" size={24} />
+            <div className="text-center group hover:-translate-y-1 transition-transform duration-300">
+              <div className="w-16 h-16 bg-brand-gold/5 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-brand-gold/10 transition-colors">
+                <Mail className="text-brand-gold" size={28} />
               </div>
-              <h4 className="font-semibold mb-2">Streamline Checkout</h4>
-              <p className="text-sm text-gray-600">
+              <h4 className="font-serif text-lg mb-3 text-brand-black">
+                Streamline Checkout
+              </h4>
+              <p className="text-sm text-gray-500 leading-relaxed max-w-[200px] mx-auto">
                 Check out faster with saved addresses and payment methods
               </p>
             </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-brand-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <LogIn className="text-brand-gold" size={24} />
+            {/* <div className="text-center group hover:-translate-y-1 transition-transform duration-300">
+              <div className="w-16 h-16 bg-brand-gold/5 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-brand-gold/10 transition-colors">
+                <LogIn className="text-brand-gold" size={28} />
               </div>
-              <h4 className="font-semibold mb-2">Book an Appointment</h4>
-              <p className="text-sm text-gray-600">
+              <h4 className="font-serif text-lg mb-3 text-brand-black">
+                Book an Appointment
+              </h4>
+              <p className="text-sm text-gray-500 leading-relaxed max-w-[200px] mx-auto">
                 Enjoy priority access to our boutique and in-store consultations
               </p>
-            </div>
+            </div> */}
           </div>
         </motion.div>
       </div>
