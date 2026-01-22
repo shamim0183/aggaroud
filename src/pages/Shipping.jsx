@@ -1,7 +1,46 @@
-import { motion } from "framer-motion"
-import { Box, Clock, Globe, Package, Shield, Truck } from "lucide-react"
+import { AnimatePresence, motion } from "framer-motion"
+import {
+  Box,
+  Clock,
+  Globe,
+  Minus,
+  Package,
+  Plus,
+  Shield,
+  Truck,
+} from "lucide-react"
+import { useState } from "react"
+
+const faqs = [
+  {
+    question: "Do you ship internationally?",
+    answer:
+      "Yes! We ship to over 100 countries worldwide. International shipping rates are calculated at checkout based on your location and order weight.",
+  },
+  {
+    question: "Can I change my shipping address after placing an order?",
+    answer:
+      "If your order hasn't shipped yet, we can update the address. Please contact us immediately at support@agaaroud.com with your order number.",
+  },
+  {
+    question: "What if my package is lost or damaged?",
+    answer:
+      "All orders are fully insured. If your package is lost or arrives damaged, contact us within 48 hours and we'll send a replacement at no charge.",
+  },
+  {
+    question: "Do you offer gift wrapping?",
+    answer:
+      "All our fragrances come in premium packaging suitable for gifting. For special occasions, we offer complimentary luxury gift wrapping—just add a note at checkout.",
+  },
+]
 
 export default function Shipping() {
+  const [openFaqIndex, setOpenFaqIndex] = useState(null)
+
+  const toggleFaq = (index) => {
+    setOpenFaqIndex(openFaqIndex === index ? null : index)
+  }
+
   return (
     <div className="pt-24">
       {/* Hero Section */}
@@ -33,9 +72,12 @@ export default function Shipping() {
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            <div className="bg-white p-8 text-center">
-              <div className="w-16 h-16 bg-brand-gold/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Truck className="text-brand-gold" size={28} />
+            <div className="bg-white p-8 pb-20 text-center transition-all duration-300 hover:shadow-xl hover:-translate-y-2 cursor-pointer group relative overflow-hidden">
+              <div className="w-16 h-16 bg-brand-gold/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-brand-gold group-hover:text-white transition-colors duration-300">
+                <Truck
+                  className="text-brand-gold group-hover:text-white transition-colors duration-300"
+                  size={28}
+                />
               </div>
               <h3 className="font-serif text-2xl mb-3 text-brand-black">
                 Standard Shipping
@@ -44,29 +86,53 @@ export default function Shipping() {
               <p className="text-2xl font-semibold text-brand-gold mb-2">
                 $9.99
               </p>
-              <p className="text-sm text-gray-500">Free on orders over $150</p>
+              <p className="text-sm text-gray-500 mb-6">
+                Free on orders over $150
+              </p>
+
+              <div className="absolute bottom-0 left-0 w-full bg-brand-black text-white py-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 font-semibold uppercase tracking-widest text-sm">
+                Select
+              </div>
             </div>
 
-            <div className="bg-white p-8 text-center border-2 border-brand-gold relative">
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-brand-gold text-white px-4 py-1 text-xs uppercase tracking-wider">
+            <div className="relative group h-full cursor-pointer transition-transform duration-300 hover:-translate-y-2">
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-brand-gold text-white px-4 py-1 text-xs uppercase tracking-wider z-20 shadow-sm">
                 Most Popular
               </div>
-              <div className="w-16 h-16 bg-brand-gold/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Package className="text-brand-gold" size={28} />
+              <div className="bg-white p-8 pb-20 text-center border-2 border-brand-gold relative overflow-hidden h-full flex flex-col justify-between transition-shadow duration-300 group-hover:shadow-xl">
+                <div>
+                  <div className="w-16 h-16 bg-brand-gold/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-brand-gold group-hover:text-white transition-colors duration-300">
+                    <Package
+                      className="text-brand-gold group-hover:text-white transition-colors duration-300"
+                      size={28}
+                    />
+                  </div>
+                  <h3 className="font-serif text-2xl mb-3 text-brand-black">
+                    Express Shipping
+                  </h3>
+                  <p className="text-gray-600 font-light mb-4">
+                    2-3 business days
+                  </p>
+                  <p className="text-2xl font-semibold text-brand-gold mb-2">
+                    $24.99
+                  </p>
+                  <p className="text-sm text-gray-500 mb-6">
+                    Expedited delivery
+                  </p>
+                </div>
+
+                <div className="absolute bottom-0 left-0 w-full bg-brand-gold text-white py-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 font-semibold uppercase tracking-widest text-sm">
+                  Select
+                </div>
               </div>
-              <h3 className="font-serif text-2xl mb-3 text-brand-black">
-                Express Shipping
-              </h3>
-              <p className="text-gray-600 font-light mb-4">2-3 business days</p>
-              <p className="text-2xl font-semibold text-brand-gold mb-2">
-                $24.99
-              </p>
-              <p className="text-sm text-gray-500">Expedited delivery</p>
             </div>
 
-            <div className="bg-white p-8 text-center">
-              <div className="w-16 h-16 bg-brand-gold/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Globe className="text-brand-gold" size={28} />
+            <div className="bg-white p-8 pb-20 text-center transition-all duration-300 hover:shadow-xl hover:-translate-y-2 cursor-pointer group relative overflow-hidden">
+              <div className="w-16 h-16 bg-brand-gold/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-brand-gold group-hover:text-white transition-colors duration-300">
+                <Globe
+                  className="text-brand-gold group-hover:text-white transition-colors duration-300"
+                  size={28}
+                />
               </div>
               <h3 className="font-serif text-2xl mb-3 text-brand-black">
                 International
@@ -77,7 +143,11 @@ export default function Shipping() {
               <p className="text-2xl font-semibold text-brand-gold mb-2">
                 From $39.99
               </p>
-              <p className="text-sm text-gray-500">Worldwide delivery</p>
+              <p className="text-sm text-gray-500 mb-6">Worldwide delivery</p>
+
+              <div className="absolute bottom-0 left-0 w-full bg-brand-black text-white py-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 font-semibold uppercase tracking-widest text-sm">
+                Select
+              </div>
             </div>
           </div>
         </div>
@@ -190,50 +260,41 @@ export default function Shipping() {
             Shipping FAQs
           </h2>
 
-          <div className="space-y-8">
-            <div className="border-b border-gray-200 pb-6">
-              <h3 className="font-semibold text-lg mb-2 text-brand-black">
-                Do you ship internationally?
-              </h3>
-              <p className="text-gray-600 font-light">
-                Yes! We ship to over 100 countries worldwide. International
-                shipping rates are calculated at checkout based on your location
-                and order weight.
-              </p>
-            </div>
-
-            <div className="border-b border-gray-200 pb-6">
-              <h3 className="font-semibold text-lg mb-2 text-brand-black">
-                Can I change my shipping address after placing an order?
-              </h3>
-              <p className="text-gray-600 font-light">
-                If your order hasn't shipped yet, we can update the address.
-                Please contact us immediately at support@agaaroud.com with your
-                order number.
-              </p>
-            </div>
-
-            <div className="border-b border-gray-200 pb-6">
-              <h3 className="font-semibold text-lg mb-2 text-brand-black">
-                What if my package is lost or damaged?
-              </h3>
-              <p className="text-gray-600 font-light">
-                All orders are fully insured. If your package is lost or arrives
-                damaged, contact us within 48 hours and we'll send a replacement
-                at no charge.
-              </p>
-            </div>
-
-            <div className="pb-6">
-              <h3 className="font-semibold text-lg mb-2 text-brand-black">
-                Do you offer gift wrapping?
-              </h3>
-              <p className="text-gray-600 font-light">
-                All our fragrances come in premium packaging suitable for
-                gifting. For special occasions, we offer complimentary luxury
-                gift wrapping—just add a note at checkout.
-              </p>
-            </div>
+          <div className="space-y-4">
+            {faqs.map((faq, index) => (
+              <div key={index} className="border-b border-gray-200">
+                <button
+                  onClick={() => toggleFaq(index)}
+                  className="w-full py-6 flex justify-between items-center text-left hover:text-brand-gold transition-colors duration-300 group"
+                >
+                  <h3 className="font-semibold text-lg text-brand-black group-hover:text-brand-gold transition-colors">
+                    {faq.question}
+                  </h3>
+                  <span className="text-brand-gold transition-transform duration-300 cursor-pointer">
+                    {openFaqIndex === index ? (
+                      <Minus size={20} />
+                    ) : (
+                      <Plus size={20} />
+                    )}
+                  </span>
+                </button>
+                <AnimatePresence>
+                  {openFaqIndex === index && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="overflow-hidden"
+                    >
+                      <p className="text-gray-600 font-light pb-6">
+                        {faq.answer}
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ))}
           </div>
         </div>
       </section>
