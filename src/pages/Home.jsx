@@ -12,6 +12,10 @@ import {
   useStaggerIn,
 } from "../utils/animations"
 
+// Import images directly to ensure they work in production
+import menCollectionImg from "../assets/images/aggaroud/insta/IMG-20250713-WA0007.jpg"
+import womenCollectionImg from "../assets/images/aggaroud/insta/IMG-20250713-WA0015.jpg"
+
 export default function Home() {
   // Cleanup ScrollTrigger on unmount
   useScrollTriggerCleanup()
@@ -90,7 +94,7 @@ export default function Home() {
             >
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-black/20 z-10 group-hover:from-brand-gold/80 group-hover:to-brand-gold/20 transition-all duration-500" />
               <img
-                src="/src/assets/images/aggaroud/insta/IMG-20250713-WA0007.jpg"
+                src={menCollectionImg}
                 alt="Men's Collection"
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
               />
@@ -111,7 +115,7 @@ export default function Home() {
             >
               <div className="absolute inset-0 bg-gradient-to-t from-rose-900/80 to-purple-900/20 z-10 group-hover:from-rose-600/80 group-hover:to-purple-600/20 transition-all duration-500" />
               <img
-                src="/src/assets/images/aggaroud/insta/IMG-20250713-WA0015.jpg"
+                src={womenCollectionImg}
                 alt="Women's Collection"
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
               />
