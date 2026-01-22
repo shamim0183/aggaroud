@@ -5,7 +5,6 @@ import "swiper/css"
 import { Autoplay } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
 
-// Extended detailed testimonials for marquee effect
 const testimonials = [
   {
     id: 1,
@@ -13,7 +12,7 @@ const testimonials = [
     title: "Luxury Lifestyle Blogger",
     rating: 5,
     text: "Agaar Oud's fragrances are simply extraordinary. The Pure Oud Royale has become my signature scent - it's sophisticated, long-lasting, and receives compliments everywhere I go.",
-    image: "/src/assets/images/aggaroud/insta/IMG-20250713-WA0002.jpg",
+    image: "/images/aggaroud/insta/IMG-20250713-WA0002.jpg",
   },
   {
     id: 2,
@@ -21,7 +20,7 @@ const testimonials = [
     title: "Fashion Executive",
     rating: 5,
     text: "As someone who's tried countless luxury fragrances, Agaar Oud stands out for its authenticity and craftsmanship. The quality is unmatched.",
-    image: "/src/assets/images/aggaroud/insta/IMG-20250713-WA0007.jpg",
+    image: "/images/aggaroud/insta/IMG-20250713-WA0007.jpg",
   },
   {
     id: 3,
@@ -29,7 +28,7 @@ const testimonials = [
     title: "Perfume Enthusiast",
     rating: 5,
     text: "Finally, a brand that truly understands the art of Arabian perfumery. Each bottle is a masterpiece. The Midnight Oud is absolutely divine! I highly recommend it to anyone looking for true luxury.",
-    image: "/src/assets/images/aggaroud/insta/IMG-20250713-WA0015.jpg",
+    image: "/images/aggaroud/insta/IMG-20250713-WA0015.jpg",
   },
   {
     id: 4,
@@ -37,7 +36,7 @@ const testimonials = [
     title: "Collector",
     rating: 5,
     text: "The presentation alone is worth the price. But the scent... it transports you. Truly a premium experience from unboxing to the last note.",
-    image: "/src/assets/images/aggaroud/insta/IMG-20250713-WA0002.jpg",
+    image: "/images/aggaroud/insta/IMG-20250713-WA0002.jpg",
   },
   {
     id: 5,
@@ -45,7 +44,7 @@ const testimonials = [
     title: "Interior Designer",
     rating: 5,
     text: "I use their home fragrances to set the mood in my projects. My clients always ask what that incredible smell is. Simply the best oud I've found.",
-    image: "/src/assets/images/aggaroud/insta/IMG-20250713-WA0007.jpg",
+    image: "/images/aggaroud/insta/IMG-20250713-WA0007.jpg",
   },
   {
     id: 6,
@@ -53,7 +52,7 @@ const testimonials = [
     title: "Entrepreneur",
     rating: 5,
     text: "Bold, commanding, yet subtle. Exactly what I look for in a daily wear fragrance. It lasts all day without being overpowering.",
-    image: "/src/assets/images/aggaroud/insta/IMG-20250713-WA0015.jpg",
+    image: "/images/aggaroud/insta/IMG-20250713-WA0015.jpg",
   },
 ]
 

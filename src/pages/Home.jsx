@@ -11,10 +11,9 @@ import {
   useScrollTriggerCleanup,
   useStaggerIn,
 } from "../utils/animations"
-
-// Import images directly to ensure they work in production
-import menCollectionImg from "../assets/images/aggaroud/insta/IMG-20250713-WA0007.jpg"
-import womenCollectionImg from "../assets/images/aggaroud/insta/IMG-20250713-WA0015.jpg"
+// Images now served from public directory
+const menCollectionImg = "/images/aggaroud/insta/IMG-20250713-WA0007.jpg"
+const womenCollectionImg = "/images/aggaroud/insta/IMG-20250713-WA0015.jpg"
 
 export default function Home() {
   // Cleanup ScrollTrigger on unmount
