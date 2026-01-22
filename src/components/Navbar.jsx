@@ -1,0 +1,203 @@
+import { motion, useScroll } from "framer-motion"
+import { Menu, Search, ShoppingBag, User } from "lucide-react"
+import React from "react"
+import { Link, useLocation } from "react-router-dom"
+import logoImg from "../assets/images/aggaroud/logo/logo.png"
+import { useCart } from "../contexts/CartContext"
+import AccountDropdown from "./AccountDropdown"
+import MobileMenu from "./MobileMenu"
+import SearchModal from "./SearchModal"
+
+export default function Navbar() {
+  const { scrollY } = useScroll()
+  const location = useLocation()
+  const isHomePage = location.pathname === "/"
+
+  // Initialize based on page - small logo on non-home pages
+  const [isScrolled, setIsScrolled] = React.useState(!isHomePage)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false)
+  const [isSearchOpen, setIsSearchOpen] = React.useState(false)
+  const [isAccountOpen, setIsAccountOpen] = React.useState(false)
+  const { getCartCount } = useCart()
+
+  // Update when page changes
+  React.useEffect(() => {
+    setIsScrolled(!isHomePage)
+  }, [isHomePage])
+
+  // Listen to scroll and switch states instantly
+  React.useEffect(() => {
+    return scrollY.on("change", (latest) => {
+      // Force compact state on non-home pages
+      setIsScrolled(latest > 1 || !isHomePage)
+    })
+  }, [scrollY, isHomePage])
+
+  // Fast transition for logo (shrinks quickly)
+  const logoTransition = {
+    type: "spring",
+    stiffness: 200,
+    damping: 25,
+  }
+
+  // Slower transition for background (appears after logo shrinks)
+  const bgTransition = {
+    type: "spring",
+    stiffness: 120,
+    damping: 30,
+    delay: 0.1, // Small delay so logo shrinks first
+  }
+
+  return (
+    <>
+      {/* Desktop Navbar - Original Gucci-style Animation */}
+      <motion.header
+        animate={{
+          height: isScrolled ? "70px" : "100vh",
+          backgroundColor: isScrolled
+            ? "rgba(255, 255, 255, 0.95)"
+            : "rgba(255, 255, 255, 0)",
+          boxShadow: isScrolled
+            ? "0 2px 8px 0 rgba(0,0,0,0.08)"
+            : "0 0 0 0 rgba(0,0,0,0)",
+          backdropFilter: isScrolled ? "blur(10px)" : "blur(0px)",
+        }}
+        transition={bgTransition}
+        className="fixed top-0 left-0 right-0 z-50 hidden md:flex items-center justify-between px-8"
+      >
+        {/* Left Action */}
+        <motion.div
+          className="flex-1 hidden md:flex"
+          animate={{ opacity: isScrolled ? 1 : 0 }}
+          transition={logoTransition}
+        >
+          <Link
+            to="/contact"
+            className="uppercase tracking-[0.3em] text-[10px] font-semibold hover:text-brand-gold transition-colors cursor-pointer"
+          >
+            Contact Us
+          </Link>
+        </motion.div>
+
+        {/* Center Logo - Shrinks fast before background appears */}
+        <motion.div
+          className="flex-1 flex justify-center items-center relative"
+          animate={{ marginTop: isScrolled ? "0px" : "150px" }}
+          transition={logoTransition}
+        >
+          <Link to="/" className="flex items-center cursor-pointer">
+            <motion.img
+              src={logoImg}
+              alt="Agaar Oud Logo"
+              className="max-h-[300px] w-auto object-contain"
+              animate={{ scale: isScrolled ? 0.2 : 1.4 }}
+              transition={logoTransition}
+            />
+          </Link>
+        </motion.div>
+
+        {/* Right Icons - Appear quickly */}
+        <motion.div
+          className="flex-1 flex justify-end items-center gap-6 text-brand-black"
+          animate={{ opacity: isScrolled ? 1 : 0 }}
+          transition={logoTransition}
+        >
+          <button
+            onClick={() => setIsSearchOpen(true)}
+            className="hover:text-brand-gold transition-colors cursor-pointer"
+          >
+            <Search size={20} strokeWidth={1} />
+          </button>
+          <div className="relative">
+            <button
+              onClick={() => setIsAccountOpen(!isAccountOpen)}
+              className="hover:text-brand-gold transition-colors cursor-pointer"
+            >
+              <User size={20} strokeWidth={1} />
+            </button>
+            <AccountDropdown
+              isOpen={isAccountOpen}
+              onClose={() => setIsAccountOpen(false)}
+            />
+          </div>
+          <Link
+            to="/cart"
+            className="hover:text-brand-gold transition-colors relative cursor-pointer"
+          >
+            <ShoppingBag size={20} strokeWidth={1} />
+            {getCartCount() > 0 && (
+              <span className="absolute -top-2 -right-2 bg-brand-gold text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-semibold">
+                {getCartCount()}
+              </span>
+            )}
+          </Link>
+          <button
+            onClick={() => setIsMobileMenuOpen(true)}
+            className="hover:text-brand-gold transition-colors cursor-pointer"
+          >
+            <Menu size={20} strokeWidth={1} />
+          </button>
+        </motion.div>
+      </motion.header>
+
+      {/* Mobile Navbar - Simplified Always-Visible */}
+      <header className="md:hidden fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm">
+        <div className="flex items-center justify-between px-4 py-4">
+          {/* Logo */}
+          <Link to="/" className="flex-1">
+            <img src={logoImg} alt="Agaar Oud" className="h-8 object-contain" />
+          </Link>
+
+          {/* Mobile Actions - Right Side Icons (Gucci Style: Bag, Account, Search, Menu) */}
+          <div className="flex items-center gap-4">
+            {/* Cart Icon with Badge */}
+            <Link to="/cart" className="relative">
+              <ShoppingBag size={20} className="text-brand-black" />
+              {getCartCount() > 0 && (
+                <span className="absolute -top-2 -right-2 bg-brand-gold text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-semibold">
+                  {getCartCount()}
+                </span>
+              )}
+            </Link>
+
+            {/* Account Icon */}
+            <button
+              onClick={() => setIsAccountOpen(!isAccountOpen)}
+              className="text-brand-black relative"
+            >
+              <User size={20} />
+            </button>
+
+            {/* Search Icon */}
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className="text-brand-black"
+            >
+              <Search size={20} />
+            </button>
+
+            {/* Hamburger Menu */}
+            <button
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="text-brand-black"
+            >
+              <Menu size={24} />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Mobile Menu */}
+      <MobileMenu
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+      />
+
+      {/* Search Modal */}
+      <SearchModal
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+      />
+    </>
+  )
+}

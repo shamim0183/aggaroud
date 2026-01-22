@@ -1,0 +1,90 @@
+[
+  {
+    "id": "amber-oud",
+    "name": "Amber Oud",
+    "price": 299,
+    "description": "A luxurious blend of amber and premium agarwood. Rich, warm, and deeply sensual.",
+    "category": "blends",
+    "gender": "Unisex",
+    "image": "/src/assets/images/aggaroud/IMG_0002.JPG",
+    "images": [
+      "/src/assets/images/aggaroud/IMG_0002.JPG",
+      "/src/assets/images/aggaroud/IMG_0007.JPG",
+      "/src/assets/images/aggaroud/IMG_0008.JPG"
+    ],
+    "inStock": true,
+    "featured": true
+  },
+  {
+    "id": "pure-oud-royale",
+    "name": "Pure Oud Royale",
+    "price": 499,
+    "description": "100% pure agarwood oil from the finest sources. Uncut, authentic, and rare.",
+    "category": "pure-oud",
+    "gender": "Men",
+    "image": "/src/assets/images/aggaroud/IMG_0007.JPG",
+    "images": [
+      "/src/assets/images/aggaroud/IMG_0007.JPG",
+      "/src/assets/images/aggaroud/IMG_0002.JPG"
+    ],
+    "inStock": true,
+    "featured": true
+  },
+  {
+    "id": "mystic-blend",
+    "name": "Mystic Blend",
+    "price": 349,
+    "description": "A mysterious fusion of oud, sandalwood, and exotic spices. Captivating and timeless.",
+    "category": "blends",
+    "gender": "Men",
+    "image": "/src/assets/images/aggaroud/IMG_0008.JPG",
+    "images": [
+      "/src/assets/images/aggaroud/IMG_0008.JPG",
+      "/src/assets/images/aggaroud/IMG_0002.JPG"
+    ],
+    "inStock": true,
+    "featured": true
+  },
+  {
+    "id": "saffron-oud",
+    "name": "Saffron Oud",
+    "price": 279,
+    "description": "Golden saffron threads intertwined with rich oud. Opulent and refined.",
+    "category": "blends",
+    "gender": "Unisex",
+    "image": "/src/assets/images/aggaroud/IMG_0002.JPG",
+    "images": [
+      "/src/assets/images/aggaroud/IMG_0002.JPG"
+    ],
+    "inStock": true,
+    "featured": false
+  },
+  {
+    "id": "cambodian-oud",
+    "name": "Cambodian Oud",
+    "price": 599,
+    "description": "Rare Cambodian agarwood with deep, complex notes. For true connoisseurs.",
+    "category": "pure-oud",
+    "gender": "Men",
+    "image": "/src/assets/images/aggaroud/IMG_0007.JPG",
+    "images": [
+      "/src/assets/images/aggaroud/IMG_0007.JPG"
+    ],
+    "inStock": true,
+    "featured": false
+  },
+  {
+    "id": "rose-oud",
+    "name": "Rose Oud",
+    "price": 329,
+    "description": "Delicate rose petals meet earthy oud. A perfect harmony of floral and woody.",
+    "category": "blends",
+    "gender": "Women",
+    "image": "/src/assets/images/aggaroud/IMG_0008.JPG",
+    "images": [
+      "/src/assets/images/aggaroud/IMG_0008.JPG"
+    ],
+    "inStock": true,
+    "featured": false
+  }
+]
