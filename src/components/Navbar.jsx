@@ -151,8 +151,11 @@ export default function Navbar() {
           {/* Mobile Actions - Right Side Icons (Gucci Style: Bag, Account, Search, Menu) */}
           <div className="flex items-center gap-4">
             {/* Cart Icon with Badge */}
-            <Link to="/cart" className="relative">
-              <ShoppingBag size={20} className="text-brand-black" />
+            <Link
+              to="/cart"
+              className="relative text-brand-black hover:text-brand-gold active:text-brand-gold transition-colors cursor-pointer"
+            >
+              <ShoppingBag size={20} />
               {getCartCount() > 0 && (
                 <span className="absolute -top-2 -right-2 bg-brand-gold text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-semibold">
                   {getCartCount()}
@@ -161,17 +164,25 @@ export default function Navbar() {
             </Link>
 
             {/* Account Icon */}
-            <button
-              onClick={() => setIsAccountOpen(!isAccountOpen)}
-              className="text-brand-black relative"
-            >
-              <User size={20} />
-            </button>
+            <div className="relative">
+              <button
+                onClick={() => setIsAccountOpen(!isAccountOpen)}
+                className={`relative transition-colors cursor-pointer ${isAccountOpen ? "text-brand-gold" : "text-brand-black hover:text-brand-gold active:text-brand-gold"}`}
+              >
+                <User size={20} />
+              </button>
+              {/* Reuse the same dropdown - styling handles positioning */}
+              <AccountDropdown
+                isOpen={isAccountOpen}
+                onClose={() => setIsAccountOpen(false)}
+                isMobile={true}
+              />
+            </div>
 
             {/* Search Icon */}
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="text-brand-black"
+              className="text-brand-black hover:text-brand-gold active:text-brand-gold transition-colors cursor-pointer"
             >
               <Search size={20} />
             </button>
@@ -179,7 +190,7 @@ export default function Navbar() {
             {/* Hamburger Menu */}
             <button
               onClick={() => setIsMobileMenuOpen(true)}
-              className="text-brand-black"
+              className="text-brand-black hover:text-brand-gold active:text-brand-gold transition-colors cursor-pointer"
             >
               <Menu size={24} />
             </button>

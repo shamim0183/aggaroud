@@ -3,7 +3,7 @@ import toast from "react-hot-toast"
 import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "../contexts/AuthContext"
 
-export default function AccountDropdown({ isOpen, onClose }) {
+export default function AccountDropdown({ isOpen, onClose, isMobile }) {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
 
@@ -13,6 +13,11 @@ export default function AccountDropdown({ isOpen, onClose }) {
     onClose()
     navigate("/")
   }
+
+  // Position styles based on device type
+  const dropdownClasses = isMobile
+    ? "fixed top-[60px] right-4 w-64 bg-white shadow-lg z-50 rounded-sm"
+    : "fixed top-[70px] right-8 w-64 bg-white shadow-lg z-50"
 
   return (
     <AnimatePresence>
@@ -33,7 +38,7 @@ export default function AccountDropdown({ isOpen, onClose }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="fixed top-[70px] right-8 w-64 bg-white shadow-lg z-50"
+            className={dropdownClasses}
           >
             <nav className="py-2">
               {!user ? (
@@ -42,7 +47,7 @@ export default function AccountDropdown({ isOpen, onClose }) {
                   <Link
                     to="/login"
                     onClick={onClose}
-                    className="block px-6 py-3 text-sm font-semibold text-brand-black hover:bg-gray-50 transition-colors uppercase tracking-wider"
+                    className="block px-6 py-3 text-sm font-semibold text-brand-black hover:bg-gray-50 active:bg-gray-100 transition-colors uppercase tracking-wider"
                   >
                     SIGN IN
                   </Link>
@@ -53,28 +58,28 @@ export default function AccountDropdown({ isOpen, onClose }) {
                   <Link
                     to="/orders"
                     onClick={onClose}
-                    className="block px-6 py-3 text-sm font-semibold text-brand-black hover:bg-gray-50 transition-colors uppercase tracking-wider"
+                    className="block px-6 py-3 text-sm font-semibold text-brand-black hover:bg-gray-50 active:bg-gray-100 transition-colors uppercase tracking-wider"
                   >
                     MY ORDERS
                   </Link>
                   <Link
                     to="/account"
                     onClick={onClose}
-                    className="block px-6 py-3 text-sm font-semibold text-brand-black hover:bg-gray-50 transition-colors uppercase tracking-wider"
+                    className="block px-6 py-3 text-sm font-semibold text-brand-black hover:bg-gray-50 active:bg-gray-100 transition-colors uppercase tracking-wider"
                   >
                     ACCOUNT SETTINGS
                   </Link>
                   <Link
                     to="/address-book"
                     onClick={onClose}
-                    className="block px-6 py-3 text-sm font-semibold text-brand-black hover:bg-gray-50 transition-colors uppercase tracking-wider"
+                    className="block px-6 py-3 text-sm font-semibold text-brand-black hover:bg-gray-50 active:bg-gray-100 transition-colors uppercase tracking-wider"
                   >
                     ADDRESS BOOK
                   </Link>
                   <Link
                     to="/wishlist"
                     onClick={onClose}
-                    className="block px-6 py-3 text-sm font-semibold text-brand-black hover:bg-gray-50 transition-colors uppercase tracking-wider"
+                    className="block px-6 py-3 text-sm font-semibold text-brand-black hover:bg-gray-50 active:bg-gray-100 transition-colors uppercase tracking-wider"
                   >
                     SAVED ITEMS
                   </Link>
@@ -85,7 +90,7 @@ export default function AccountDropdown({ isOpen, onClose }) {
                   {/* Logout */}
                   <button
                     onClick={handleLogout}
-                    className="block w-full text-left px-6 py-3 text-sm font-semibold text-brand-black hover:bg-gray-50 transition-colors uppercase tracking-wider cursor-pointer"
+                    className="block w-full text-left px-6 py-3 text-sm font-semibold text-brand-black hover:bg-gray-50 active:bg-gray-100 transition-colors uppercase tracking-wider cursor-pointer"
                   >
                     SIGN OUT
                   </button>
