@@ -10,6 +10,8 @@ import {
   Truck,
 } from "lucide-react"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom";
+import { useCart } from "../contexts/CartContext";
 
 const faqs = [
   {
@@ -36,9 +38,16 @@ const faqs = [
 
 export default function Shipping() {
   const [openFaqIndex, setOpenFaqIndex] = useState(null)
+  const navigate = useNavigate()
+  const { selectShipping, shippingOptions } = useCart()
 
   const toggleFaq = (index) => {
     setOpenFaqIndex(openFaqIndex === index ? null : index)
+  }
+
+  const handleSelectShipping = (option) => {
+    selectShipping(option)
+    navigate("/cart")
   }
 
   return (
@@ -90,9 +99,12 @@ export default function Shipping() {
                 Free on orders over $150
               </p>
 
-              <div className="absolute bottom-0 left-0 w-full bg-brand-black text-white py-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 font-semibold uppercase tracking-widest text-sm">
+              <button
+                onClick={() => handleSelectShipping(shippingOptions[0])}
+                className="absolute bottom-0 left-0 w-full bg-brand-black text-white py-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 font-semibold uppercase tracking-widest text-sm cursor-pointer"
+              >
                 Select
-              </div>
+              </button>
             </div>
 
             <div className="relative group h-full cursor-pointer transition-transform duration-300 hover:-translate-y-2">
@@ -121,9 +133,12 @@ export default function Shipping() {
                   </p>
                 </div>
 
-                <div className="absolute bottom-0 left-0 w-full bg-brand-gold text-white py-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 font-semibold uppercase tracking-widest text-sm">
+                <button
+                  onClick={() => handleSelectShipping(shippingOptions[1])}
+                  className="absolute bottom-0 left-0 w-full bg-brand-gold text-white py-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 font-semibold uppercase tracking-widest text-sm cursor-pointer"
+                >
                   Select
-                </div>
+                </button>
               </div>
             </div>
 
@@ -145,9 +160,12 @@ export default function Shipping() {
               </p>
               <p className="text-sm text-gray-500 mb-6">Worldwide delivery</p>
 
-              <div className="absolute bottom-0 left-0 w-full bg-brand-black text-white py-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 font-semibold uppercase tracking-widest text-sm">
+              <button
+                onClick={() => handleSelectShipping(shippingOptions[2])}
+                className="absolute bottom-0 left-0 w-full bg-brand-black text-white py-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 font-semibold uppercase tracking-widest text-sm cursor-pointer"
+              >
                 Select
-              </div>
+              </button>
             </div>
           </div>
         </div>

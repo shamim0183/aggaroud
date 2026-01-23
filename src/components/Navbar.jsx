@@ -36,16 +36,16 @@ export default function Navbar() {
   // Fast transition for logo (shrinks quickly)
   const logoTransition = {
     type: "spring",
-    stiffness: 200,
-    damping: 25,
+    stiffness: 120,
+    damping: 20,
   }
 
   // Slower transition for background (appears after logo shrinks)
   const bgTransition = {
     type: "spring",
-    stiffness: 120,
-    damping: 30,
-    delay: 0.1, // Small delay so logo shrinks first
+    stiffness: 80,
+    damping: 20,
+    delay: 0.15, // Small delay so logo shrinks first
   }
 
   return (
@@ -53,23 +53,27 @@ export default function Navbar() {
       {/* Desktop Navbar - Original Gucci-style Animation */}
       <motion.header
         animate={{
-          height: isScrolled ? "70px" : "100vh",
-          backgroundColor: isScrolled
-            ? "rgba(255, 255, 255, 0.95)"
-            : "rgba(255, 255, 255, 0)",
-          boxShadow: isScrolled
-            ? "0 2px 8px 0 rgba(0,0,0,0.08)"
-            : "0 0 0 0 rgba(0,0,0,0)",
-          backdropFilter: isScrolled ? "blur(10px)" : "blur(0px)",
+          height: "70px",
+          backgroundColor:
+            isHomePage && !isScrolled
+              ? "rgba(255, 255, 255, 0)"
+              : "rgba(255, 255, 255, 0.95)",
+          boxShadow:
+            isHomePage && !isScrolled
+              ? "0 0 0 0 rgba(0,0,0,0)"
+              : "0 2px 8px 0 rgba(0,0,0,0.08)",
+          backdropFilter:
+            isHomePage && !isScrolled ? "blur(0px)" : "blur(10px)",
+          translateY: isHomePage && !isScrolled ? "-100%" : "0%",
         }}
-        transition={bgTransition}
+        transition={isHomePage ? bgTransition : { duration: 0 }}
         className="fixed top-0 left-0 right-0 z-50 hidden md:flex items-center justify-between px-8"
       >
         {/* Left Action */}
         <motion.div
           className="flex-1 hidden md:flex"
-          animate={{ opacity: isScrolled ? 1 : 0 }}
-          transition={logoTransition}
+          animate={{ opacity: isHomePage && !isScrolled ? 0 : 1 }}
+          transition={isHomePage ? logoTransition : { duration: 0 }}
         >
           <Link
             to="/contact"
@@ -82,16 +86,20 @@ export default function Navbar() {
         {/* Center Logo - Shrinks fast before background appears */}
         <motion.div
           className="flex-1 flex justify-center items-center relative"
-          animate={{ marginTop: isScrolled ? "0px" : "150px" }}
-          transition={logoTransition}
+          animate={{
+            marginTop: isScrolled ? "0px" : "850px",
+            scale: isHomePage && !isScrolled ? 9 : 1.2,
+          }}
+          transition={isHomePage ? logoTransition : { duration: 0 }}
+          style={{
+            transformOrigin: "center center",
+          }}
         >
           <Link to="/" className="flex items-center cursor-pointer">
-            <motion.img
+            <img
               src={logoImg}
               alt="Agaar Oud Logo"
-              className="max-h-[300px] w-auto object-contain"
-              animate={{ scale: isScrolled ? 0.2 : 1.4 }}
-              transition={logoTransition}
+              className="h-10 w-auto object-contain"
             />
           </Link>
         </motion.div>

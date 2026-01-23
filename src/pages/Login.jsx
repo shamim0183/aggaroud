@@ -1,8 +1,8 @@
 import { motion } from "framer-motion"
-import { Eye, EyeOff, LogIn, Mail, UserPlus } from "lucide-react"
+import { Eye, EyeOff, Mail, UserPlus } from "lucide-react"
 import { useState } from "react"
 import { toast } from "react-hot-toast"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import { useAuth } from "../contexts/AuthContext"
 
 export default function Login() {
@@ -17,6 +17,8 @@ export default function Login() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const { signup, login, signInWithGoogle } = useAuth()
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const redirectTo = searchParams.get("redirect") || "/"
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -42,7 +44,7 @@ export default function Login() {
         await login(formData.email, formData.password)
         toast.success("Logged in successfully!")
       }
-      navigate("/")
+      navigate(redirectTo)
     } catch (error) {
       console.error("Auth error:", error)
       if (error.code === "auth/email-already-in-use") {
@@ -69,7 +71,7 @@ export default function Login() {
     try {
       await signInWithGoogle()
       toast.success("Signed in with Google!")
-      navigate("/")
+      navigate(redirectTo)
     } catch (error) {
       console.error("Google sign-in error:", error)
       toast.error("Failed to sign in with Google")

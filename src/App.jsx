@@ -23,9 +23,11 @@ const MyOrders = lazy(() => import("./pages/MyOrders"))
 const AccountSettings = lazy(() => import("./pages/AccountSettings"))
 const AddressBook = lazy(() => import("./pages/AddressBook"))
 const Wishlist = lazy(() => import("./pages/Wishlist"))
+const NotFound = lazy(() => import("./pages/NotFound"))
 
 // Import ProtectedRoute
 import ProtectedRoute from "./components/ProtectedRoute"
+import ScrollToTopOnRouteChange from "./components/ScrollToTopOnRouteChange"
 
 // Loading component
 function PageLoader() {
@@ -45,6 +47,7 @@ function App() {
       <WishlistProvider>
         <CartProvider>
           <BrowserRouter>
+            <ScrollToTopOnRouteChange />
             <Toaster
               position="top-right"
               toastOptions={{
@@ -111,6 +114,8 @@ function App() {
                       </ProtectedRoute>
                     }
                   />
+                  {/* 404 Catch-all */}
+                  <Route path="*" element={<NotFound />} />
                 </Route>
               </Routes>
             </Suspense>
