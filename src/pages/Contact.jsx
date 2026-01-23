@@ -15,10 +15,10 @@ export default function Contact() {
     e.preventDefault()
 
     // Check if reCAPTCHA is completed
-    if (!recaptchaToken) {
-      toast.error("Please complete the reCAPTCHA verification")
-      return
-    }
+    // if (!recaptchaToken) {
+    //   toast.error("Please complete the reCAPTCHA verification")
+    //   return
+    // }
 
     setIsSubmitting(true)
 
@@ -173,18 +173,19 @@ export default function Contact() {
               </div>
 
               {/* reCAPTCHA */}
-              <div>
+              {/* <div>
                 <ReCAPTCHA
                   ref={recaptchaRef}
                   sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
                   onChange={handleRecaptchaChange}
                   theme="light"
                 />
-              </div>
+              </div> */}
 
               <button
                 type="submit"
-                disabled={isSubmitting || !recaptchaToken}
+                // disabled={isSubmitting || !recaptchaToken}
+                disabled={isSubmitting}
                 className="w-full bg-brand-gold text-white py-4 rounded-sm hover:bg-brand-gold/90 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
                 {isSubmitting ? "Sending..." : "Send Message"}
