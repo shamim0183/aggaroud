@@ -148,7 +148,7 @@ export default function Testimonials() {
         ))}
       </Swiper>
 
-      <style jsx>{`
+      <style>{`
         /* Smooth marquee effect */
         :global(.swiper-wrapper) {
           transition-timing-function: linear !important;

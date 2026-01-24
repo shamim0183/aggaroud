@@ -87,8 +87,8 @@ export default function Navbar() {
         <motion.div
           className="flex-1 flex justify-center items-center relative"
           animate={{
-            marginTop: isScrolled ? "0px" : "850px",
-            scale: isHomePage && !isScrolled ? 9 : 1.2,
+            marginTop: isScrolled ? "0px" : "350px",
+            scale: isHomePage && !isScrolled ? 4 : 1.2,
           }}
           transition={isHomePage ? logoTransition : { duration: 0 }}
           style={{

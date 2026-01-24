@@ -12,39 +12,58 @@ export default function Women() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative h-[60vh] md:h-[70vh] bg-white overflow-hidden">
+      <section className="relative h-[60vh] md:h-[70vh] bg-black overflow-hidden">
         <div className="absolute inset-0">
-          <img
+          <motion.img
+            initial={{ scale: 1.1 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
             src="/src/assets/images/aggaroud/insta/IMG-20250713-WA0015.jpg"
             alt="Women's Fragrance Collection"
-            className="w-full h-full object-cover opacity-90"
+            className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-transparent to-white/40" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-rose-950/40 to-black/70" />
         </div>
 
         <div className="relative h-full flex flex-col items-center justify-center text-center px-4 md:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-3xl"
-          >
-            <p className="text-brand-gold text-xs md:text-sm uppercase tracking-[0.3em] mb-3 md:mb-4 font-semibold">
-              For Her
-            </p>
-            <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-4 md:mb-6 text-brand-black leading-tight">
-              Women's Collection
-            </h1>
-            <p className="text-base sm:text-lg md:text-xl text-gray-700 mb-6 md:mb-8 font-light max-w-2xl mx-auto px-4">
-              Elegant & Captivating
-            </p>
-            <Link
-              to="/products"
-              className="inline-block border-2 border-brand-black text-brand-black px-8 md:px-10 py-3 md:py-4 text-xs md:text-sm uppercase tracking-widest font-semibold hover:bg-brand-black hover:text-white transition-all duration-300 cursor-pointer"
+          <div className="max-w-3xl">
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-rose-300 text-xs md:text-sm uppercase tracking-[0.3em] mb-3 md:mb-4 font-semibold"
             >
-              Explore Collection
-            </Link>
-          </motion.div>
+              For Her
+            </motion.p>
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-4 md:mb-6 text-white leading-tight"
+            >
+              Women's Collection
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              className="text-base sm:text-lg md:text-xl text-white/90 mb-6 md:mb-8 font-light max-w-2xl mx-auto px-4"
+            >
+              Elegant & Captivating
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.8 }}
+            >
+              <Link
+                to="/products"
+                className="inline-block border-2 border-white text-white px-8 md:px-10 py-3 md:py-4 text-xs md:text-sm uppercase tracking-widest font-semibold hover:bg-white hover:text-rose-900 transition-all duration-300 cursor-pointer"
+              >
+                Explore Collection
+              </Link>
+            </motion.div>
+          </div>
         </div>
       </section>
 
