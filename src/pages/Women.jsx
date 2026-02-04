@@ -18,7 +18,7 @@ export default function Women() {
             initial={{ scale: 1.1 }}
             animate={{ scale: 1 }}
             transition={{ duration: 1.5, ease: "easeOut" }}
-            src="/src/assets/images/aggaroud/insta/IMG-20250713-WA0015.jpg"
+            src="images/aggaroud/insta/women.webp"
             alt="Women's Fragrance Collection"
             className="w-full h-full object-cover"
           />
@@ -56,12 +56,12 @@ export default function Women() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.8 }}
             >
-              <Link
+              {/* <Link
                 to="/products"
                 className="inline-block border-2 border-white text-white px-8 md:px-10 py-3 md:py-4 text-xs md:text-sm uppercase tracking-widest font-semibold hover:bg-white hover:text-rose-900 transition-all duration-300 cursor-pointer"
               >
                 Explore Collection
-              </Link>
+              </Link> */}
             </motion.div>
           </div>
         </div>
@@ -89,7 +89,7 @@ export default function Women() {
       </section>
 
       {/* Fragrance Notes Section */}
-      <section className="py-24 px-8 bg-gray-50">
+      {/* <section className="py-24 px-8 bg-gray-50">
         <div className="max-w-7xl mx-auto">
           <h3 className="font-serif text-4xl text-center mb-16 text-brand-black">
             Key Notes in Women's Fragrances
@@ -130,7 +130,7 @@ export default function Women() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA Section */}
       <section className="py-20 px-8 bg-gray-50 text-center">

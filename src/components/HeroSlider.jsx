@@ -48,7 +48,11 @@ export default function HeroSlider() {
   return (
     <section className="relative h-screen w-full overflow-hidden">
       {/* Background Slider */}
-      <Swiper
+      <div
+        className="w-full h-full bg-cover bg-center"
+        style={{ backgroundImage: `url(${hero1})` }}
+      />
+      {/* <Swiper
         modules={[Autoplay, EffectFade]}
         effect="fade"
         autoplay={{
@@ -79,7 +83,7 @@ export default function HeroSlider() {
             style={{ backgroundImage: `url(${hero3})` }}
           />
         </SwiperSlide>
-      </Swiper>
+      </Swiper> */}
 
       {/* Dark Overlay */}
       <div
@@ -88,7 +92,7 @@ export default function HeroSlider() {
       />
 
       {/* Content */}
-      <div
+      {/* <div
         className="absolute inset-0 flex items-center justify-center text-center px-4 pointer-events-none"
         style={{ zIndex: 2 }}
       >
@@ -102,17 +106,17 @@ export default function HeroSlider() {
               transition={{ duration: 0.5 }}
             >
               {/* Subtitle */}
-              <motion.p
+      {/* <motion.p
                 className="text-white/90 uppercase tracking-[0.4em] mb-6 text-sm font-light"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
                 {currentContent.subtitle}
-              </motion.p>
+              </motion.p> */}
 
-              {/* Main Title */}
-              <motion.h1
+      {/* Main Title */}
+      {/* <motion.h1
                 className="text-white font-serif text-6xl md:text-8xl italic mb-8"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -122,20 +126,20 @@ export default function HeroSlider() {
                 <span className="inline-block text-brand-gold">
                   {currentContent.title[1]}
                 </span>
-              </motion.h1>
+              </motion.h1> */}
 
-              {/* Description */}
-              <motion.p
+      {/* Description */}
+      {/* <motion.p
                 className="text-white/80 text-lg mb-12 max-w-2xl mx-auto font-light leading-relaxed"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
               >
                 {currentContent.description}
-              </motion.p>
+              </motion.p> */}
 
-              {/* CTA Button */}
-              <motion.div
+      {/* CTA Button */}
+      {/* <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: 0.7 }}
@@ -147,10 +151,10 @@ export default function HeroSlider() {
                   Discover the Collection
                 </Link>
               </motion.div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-      </div>
+            </motion.div> */}
+      {/* </AnimatePresence> */}
+      {/* </div> */}
+      {/* </div> */}
     </section>
   )
 }

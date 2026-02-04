@@ -102,17 +102,9 @@ export default function MobileMenu({ isOpen, onClose }) {
                 >
                   <span>Home</span>
                 </Link>
+
                 <Link
                   ref={(el) => (menuItemsRef.current[1] = el)}
-                  to="/products"
-                  onClick={onClose}
-                  className="flex items-center justify-between py-4 text-lg hover:text-brand-gold transition-colors cursor-pointer border-b border-gray-100"
-                >
-                  <span>Shop All</span>
-                  <ChevronRight size={20} className="text-gray-400" />
-                </Link>
-                <Link
-                  ref={(el) => (menuItemsRef.current[2] = el)}
                   to="/men"
                   onClick={onClose}
                   className="flex items-center justify-between py-4 text-lg hover:text-brand-gold transition-colors cursor-pointer border-b border-gray-100"
@@ -121,7 +113,7 @@ export default function MobileMenu({ isOpen, onClose }) {
                   <ChevronRight size={20} className="text-gray-400" />
                 </Link>
                 <Link
-                  ref={(el) => (menuItemsRef.current[3] = el)}
+                  ref={(el) => (menuItemsRef.current[2] = el)}
                   to="/women"
                   onClick={onClose}
                   className="flex items-center justify-between py-4 text-lg hover:text-brand-gold transition-colors cursor-pointer border-b border-gray-100"
@@ -130,6 +122,15 @@ export default function MobileMenu({ isOpen, onClose }) {
                   <ChevronRight size={20} className="text-gray-400" />
                 </Link>
                 <Link
+                  ref={(el) => (menuItemsRef.current[3] = el)}
+                  to="/products"
+                  onClick={onClose}
+                  className="flex items-center justify-between py-4 text-lg hover:text-brand-gold transition-colors cursor-pointer border-b border-gray-100"
+                >
+                  <span>Shop All</span>
+                  <ChevronRight size={20} className="text-gray-400" />
+                </Link>
+                {/* <Link
                   ref={(el) => (menuItemsRef.current[4] = el)}
                   to="/cart"
                   onClick={onClose}
@@ -137,11 +138,11 @@ export default function MobileMenu({ isOpen, onClose }) {
                 >
                   <span>Shopping Cart</span>
                   <ChevronRight size={20} className="text-gray-400" />
-                </Link>
+                </Link> */}
               </div>
 
               {/* Secondary Links - Subtle styling like Gucci */}
-              <div className="mt-8 space-y-1">
+              {/* <div className="mt-8 space-y-1">
                 <Link
                   ref={(el) => (secondaryItemsRef.current[0] = el)}
                   to="/contact"
@@ -169,7 +170,7 @@ export default function MobileMenu({ isOpen, onClose }) {
                   <span>Shipping Info</span>
                   <ChevronRight size={16} className="text-gray-400" />
                 </Link>
-              </div>
+              </div> */}
             </nav>
           </motion.div>
         </>

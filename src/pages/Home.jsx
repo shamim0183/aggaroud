@@ -1,9 +1,10 @@
+import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import HeroSlider from "../components/HeroSlider"
 import OurStory from "../components/OurStory"
 import ProductGrid from "../components/ProductGrid"
 import Testimonials from "../components/Testimonials"
-import productsData from "../data/products.json"
+import { fetchProducts } from "../lib/shopify"
 import {
   useFadeIn,
   useFadeInLeft,
@@ -12,10 +13,28 @@ import {
   useStaggerIn,
 } from "../utils/animations"
 // Images now served from public directory
-const menCollectionImg = "/images/aggaroud/insta/IMG-20250713-WA0007.jpg"
-const womenCollectionImg = "/images/aggaroud/insta/IMG-20250713-WA0015.jpg"
+const menCollectionImg = "/images/aggaroud/insta/men.jpg"
+const womenCollectionImg = "/images/aggaroud/insta/women.webp"
 
 export default function Home() {
+  const [allProducts, setAllProducts] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  // Fetch products from Shopify
+  useEffect(() => {
+    async function loadProducts() {
+      try {
+        const products = await fetchProducts()
+        setAllProducts(products)
+        setLoading(false)
+      } catch (error) {
+        console.error("Error loading products:", error)
+        setLoading(false)
+      }
+    }
+    loadProducts()
+  }, [])
+
   // Cleanup ScrollTrigger on unmount
   useScrollTriggerCleanup()
 
@@ -35,17 +54,30 @@ export default function Home() {
   const womenTitleRef = useFadeInRight(0)
   const womenGridRef = useStaggerIn(0.15)
 
-  // Get featured products
-  const featuredProducts = productsData.filter((product) => product.featured)
+  // Get featured products from Shopify
+  const featuredProducts = allProducts.filter((product) => product.featured)
 
-  // Get products by gender
-  const menProducts = productsData
+  // Get products by gender from Shopify
+  const menProducts = allProducts
     .filter((p) => p.gender === "Men" || p.gender === "Unisex")
     .slice(0, 3)
 
-  const womenProducts = productsData
+  const womenProducts = allProducts
     .filter((p) => p.gender === "Women" || p.gender === "Unisex")
     .slice(0, 3)
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="font-serif text-4xl mb-4 text-brand-black animate-pulse">
+            Loading...
+          </h2>
+          <p className="text-gray-600">Fetching products from Shopify</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div>
@@ -179,7 +211,7 @@ export default function Home() {
       </section>
 
       {/* Our Story Section with Image Carousel */}
-      <OurStory />
+      {/* <OurStory /> */}
 
       {/* Testimonials Carousel */}
       <Testimonials />

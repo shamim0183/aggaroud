@@ -15,6 +15,7 @@ import { Link, useNavigate } from "react-router-dom"
 import ProductGrid from "../components/ProductGrid"
 import { useAuth } from "../contexts/AuthContext"
 import { useCart } from "../contexts/CartContext"
+import { createCheckout } from "../lib/shopify"
 import productsData from "../data/products.json"
 
 export default function Cart() {
@@ -59,16 +60,25 @@ export default function Cart() {
     .filter((p) => !cartProductIds.includes(p.id) && p.featured)
     .slice(0, 3)
 
-  const handleCheckout = () => {
-    if (!user) {
-      // Not logged in - redirect to login with return URL
-      toast.error("Please sign in to continue to checkout")
-      navigate("/login?redirect=/cart")
-    } else {
-      // Logged in - proceed to checkout
-      // TODO: Implement actual checkout flow (Shopify integration)
-      toast.success("Proceeding to checkout...")
-      // navigate("/checkout") // When checkout page is ready
+  const handleCheckout = async () => {
+    try {
+      // Show loading toast
+      const loadingToast = toast.loading("Creating checkout...")
+
+      // Create Shopify checkout with cart items
+      const checkoutUrl = await createCheckout(cart)
+
+      // Dismiss loading toast
+      toast.dismiss(loadingToast)
+
+      // Success message
+      toast.success("Redirecting to secure checkout...")
+
+      // Redirect to Shopify checkout page (includes PayPal and all payment options)
+      window.location.href = checkoutUrl
+    } catch (error) {
+      console.error("Checkout error:", error)
+      toast.error("Failed to create checkout. Please try again.")
     }
   }
 
@@ -274,11 +284,10 @@ export default function Cart() {
                       <button
                         key={option.id}
                         onClick={() => selectShipping(option)}
-                        className={`w-full p-4 border-2 rounded-sm transition-all duration-200 text-left cursor-pointer ${
-                          selectedShipping.id === option.id
-                            ? "border-brand-gold bg-brand-gold/5"
-                            : "border-gray-200 hover:border-brand-gold/50"
-                        }`}
+                        className={`w-full p-4 border-2 rounded-sm transition-all duration-200 text-left cursor-pointer ${selectedShipping.id === option.id
+                          ? "border-brand-gold bg-brand-gold/5"
+                          : "border-gray-200 hover:border-brand-gold/50"
+                          }`}
                       >
                         <div className="flex justify-between items-start">
                           <div className="flex-1">
@@ -358,10 +367,10 @@ export default function Cart() {
                   </div>
                   {(isFreeShipping ||
                     appliedPromo?.type === "free_shipping") && (
-                    <p className="text-xs text-green-600">
-                      🎉 You qualified for free shipping!
-                    </p>
-                  )}
+                      <p className="text-xs text-green-600">
+                        🎉 You qualified for free shipping!
+                      </p>
+                    )}
                 </div>
 
                 <div className="flex justify-between text-xl font-semibold mb-8">
@@ -369,12 +378,41 @@ export default function Cart() {
                   <span className="text-brand-gold">${total.toFixed(2)}</span>
                 </div>
 
-                <button
-                  onClick={handleCheckout}
-                  className="w-full bg-brand-black text-white py-4 rounded-sm font-semibold uppercase tracking-widest hover:bg-brand-gold transition-colors mb-4 cursor-pointer"
-                >
-                  Proceed to Checkout
-                </button>
+                {/* PayPal Style Checkout Button */}
+                <div className="space-y-3 mb-4">
+                  <button
+                    onClick={handleCheckout}
+                    className="w-full bg-[#FFC439] hover:bg-[#F7B731] text-[#003087] py-4 rounded font-bold text-lg transition-all duration-300 transform hover:scale-[1.02] shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center gap-2"
+                  >
+                    <span className="font-bold">Pay with</span>
+                    <svg
+                      viewBox="0 0 100 32"
+                      className="h-6"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill="#003087"
+                        d="M12 4.917v18.17h-4.5V4.917h4.5zm6.79 11.17c.012-.36.055-.713.13-1.054h8.23c-.015.36-.047.713-.098 1.054h-8.26zm15.85-5.79h-8.44c.36-.935.98-1.67 1.834-2.09.33-.165.69-.264 1.066-.288V4.917c-.012 0-.03.002-.045.002-2.03 0-3.864.95-5.14 2.433-.66.766-1.18 1.64-1.54 2.59h-8.44c-.012 0-.023.003-.034.003-2.03 0-3.865.95-5.14 2.433-.66.766-1.18 1.64-1.54 2.59h8.26c.36.935.98 1.67 1.834 2.09.33.165.69.264 1.066.288v3.003c-.012 0-.03.002-.045.002-2.03 0-3.864-.95-5.14-2.433-.66-.766-1.18-1.64-1.54-2.59h-3.76v4.503h24V10.296z"
+                        opacity=".7"
+                      />
+                      <path
+                        fill="#009CDE"
+                        d="M88.03 4.917c0 .658-.536 1.193-1.194 1.193-.66 0-1.195-.535-1.195-1.193 0-.66.536-1.195 1.195-1.195.658 0 1.193.536 1.193 1.195zm15.24 15.43c-.9.75-2.24 1.12-4.02 1.12-1.78 0-3.13-.37-4.02-1.12-.9-.74-1.35-1.83-1.35-3.24V4.917h4.5v12.19c0 .72.18 1.24.54 1.58.36.34.9.51 1.63.51.72 0 1.26-.17 1.62-.51.36-.34.54-.86.54-1.58V4.917h4.5v12.19c0 1.41-.45 2.5-1.35 3.24zm-24.05-6.05c.42-.42.63-1.02.63-1.8v-1.41c0-.78-.21-1.38-.63-1.8-.42-.42-1.02-.63-1.8-.63h-3.24v6.27h3.24c.78 0 1.38-.21 1.8-.63zm4.23 8.79h-5.04l-3.78-6.93h-1.47v6.93h-4.5V4.917h7.74c1.68 0 3.03.45 4.05 1.35 1.02.9 1.53 2.13 1.53 3.69v1.41c0 1.11-.27 2.07-.81 2.88-.54.81-1.29 1.41-2.25 1.8l3.54 6.93z"
+                      />
+                      <path
+                        fill="#003087"
+                        d="M60.03 11.297c-.9-.75-2.25-1.13-4.05-1.13h-7.74v18.17h4.5v-6.93h3.24c1.8 0 3.15-.38 4.05-1.13.9-.75 1.35-1.83 1.35-3.24v-1.41c0-1.56-.45-2.78-1.35-3.36zm-4.23 6.05c-.42.42-1.02.63-1.8.63h-3.24v-6.27h3.24c.78 0 1.38.21 1.8.63.42.42.63 1.02.63 1.8v1.41c0 .78-.21 1.38-.63 1.8z"
+                      />
+                    </svg>
+                  </button>
+
+                  <button
+                    onClick={handleCheckout}
+                    className="w-full text-center text-sm text-gray-600 hover:text-brand-black transition-colors cursor-pointer underline"
+                  >
+                    More payment options
+                  </button>
+                </div>
 
                 <Link
                   to="/products"

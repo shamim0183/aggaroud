@@ -110,7 +110,7 @@ export default function Wishlist() {
 
                 <div className="space-y-2">
                   <Link to={`/products/${product.id}`}>
-                    <h3 className="font-light text-lg text-brand-black hover:text-brand-gold transition-colors">
+                    <h3 className="font-light text-lg text-brand-black hover:text-black transition-colors">
                       {product.name}
                     </h3>
                   </Link>
@@ -121,7 +121,7 @@ export default function Wishlist() {
 
                   <button
                     onClick={() => handleAddToCart(product)}
-                    className="w-full bg-brand-black text-white py-3 flex items-center justify-center gap-2 hover:bg-gray-800 transition-colors mt-4 uppercase tracking-wider text-sm cursor-pointer"
+                    className="cursor-pointer w-full bg-brand-black text-white py-3 flex items-center justify-center gap-2 hover:bg-gray-800 transition-colors mt-4 uppercase tracking-wider text-sm cursor-pointer"
                   >
                     <ShoppingBag size={18} />
                     Add to Cart

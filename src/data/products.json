@@ -3,7 +3,7 @@
     "id": "amber-oud",
     "name": "Amber Oud",
     "price": 99,
-    "description": "A luxurious blend of amber and premium agarwood. Rich, warm, and deeply sensual.",
+    "description": "Amber Oud captures the essence of eternal summer. Zesty citrus bursts into a cascade of ripe fruits — an intoxicating dance of sweetness and light. As the day fades, velvety vanilla, white musk, and amber weave a silken trail of warmth and allure. A fragrance of pure joy and sensual sophistication —vibrant, long-lasting, and irresistibly magnetic.",
     "category": "blends",
     "gender": "Unisex",
     "image": "/images/aggaroud/IMG_0002.JPG",
@@ -11,6 +11,21 @@
       "/images/aggaroud/IMG_0002.JPG",
       "/images/aggaroud/IMG_0007.JPG",
       "/images/aggaroud/IMG_0008.JPG"
+    ],
+    "top": "Bergamot, Mandarin, Hyacinth, Pineapple",
+    "heart": "Loganberry, Orris, Jasmine, Pink Pepper",
+    "base": "Amber, Musk, Sandalwood, Vanilla, Oud",
+    "variants": [
+      {
+        "id": "6ml",
+        "size": "6ml",
+        "price": 99
+      },
+      {
+        "id": "12ml",
+        "size": "12ml",
+        "price": 179
+      }
     ],
     "inStock": true,
     "featured": true

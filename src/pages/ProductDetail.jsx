@@ -1,18 +1,64 @@
 import { ArrowLeft, Heart, ShoppingCart } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
+import toast from "react-hot-toast"
+import { useAuth } from "../contexts/AuthContext"
 import { useCart } from "../contexts/CartContext"
-import productsData from "../data/products.json"
+import { useWishlist } from "../contexts/WishlistContext"
+import { fetchProducts } from "../lib/shopify"
 
 export default function ProductDetail() {
   const { id } = useParams()
+  const { user } = useAuth()
   const { addToCart } = useCart()
+  const { toggleWishlist, isInWishlist } = useWishlist()
   const [quantity, setQuantity] = useState(1)
   const [selectedImage, setSelectedImage] = useState(0)
+  const [selectedVariant, setSelectedVariant] = useState(null)
+  const [product, setProduct] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
-  const product = productsData.find((p) => p.id === id)
+  useEffect(() => {
+    async function loadProduct() {
+      try {
+        console.log("🔍 Loading product from Shopify:", id)
+        const products = await fetchProducts()
+        const foundProduct = products.find((p) => p.id.includes(id) || p.shopifyId === id)
 
-  if (!product) {
+        if (foundProduct) {
+          console.log("✅ Product found:", foundProduct.name)
+          setProduct(foundProduct)
+        } else {
+          setError("Product not found")
+        }
+        setLoading(false)
+      } catch (err) {
+        console.error("❌ Error loading product:", err)
+        setError(err.message)
+        setLoading(false)
+      }
+    }
+
+    loadProduct()
+  }, [id])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen py-32 px-8">
+        <div className="max-w-7xl mx-auto text-center">
+          <div className="animate-pulse">
+            <h1 className="font-serif text-5xl mb-4 text-brand-black">
+              Loading Product...
+            </h1>
+            <p className="text-gray-600">Fetching from Shopify</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (error || !product) {
     return (
       <div className="min-h-screen py-32 px-8">
         <div className="max-w-7xl mx-auto text-center">
@@ -25,10 +71,76 @@ export default function ProductDetail() {
     )
   }
 
-  const handleAddToCart = () => {
-    addToCart(product, quantity)
-    toast.success(`${quantity}x ${product.name} added to cart!`)
+  // Get variants from product data (sizes like 6ml, 12ml)
+  const variants = product.variants || [
+    { id: '6ml', size: '6ml', price: product.price },
+    { id: '12ml', size: '12ml', price: product.price * 1.8 }
+  ]
+
+  // Initialize selected variant on first render
+  if (selectedVariant === null && variants.length > 0) {
+    setSelectedVariant(variants[0])
   }
+
+  const handleAddToCart = () => {
+    const productWithVariant = {
+      ...product,
+      selectedVariant: selectedVariant,
+      price: selectedVariant ? selectedVariant.price : product.price
+    }
+    addToCart(productWithVariant, quantity)
+    toast.success(`${quantity}x ${product.name} (${selectedVariant?.size || 'Default'}) added to cart!`)
+  }
+
+  // Parse description to extract sections (main description, TOP, HEART, BASE)
+  const parseDescription = (description) => {
+    if (!description) return { main: '', top: '', heart: '', base: '' }
+
+    // Try to extract sections even if they're on the same line
+    const topMatch = description.match(/TOP[:\s]*(.*?)(?=HEART|BASE|$)/is)
+    const heartMatch = description.match(/HEART[:\s]*(.*?)(?=BASE|$)/is)
+    const baseMatch = description.match(/BASE[:\s]*(.*?)$/is)
+
+    // Extract main description (everything before TOP, HEART, or BASE)
+    const mainMatch = description.match(/^(.*?)(?=TOP|HEART|BASE|$)/is)
+
+    return {
+      main: mainMatch ? mainMatch[1].trim() : '',
+      top: topMatch ? topMatch[1].trim() : '',
+      heart: heartMatch ? heartMatch[1].trim() : '',
+      base: baseMatch ? baseMatch[1].trim() : '',
+    }
+  }
+
+  const parsedDescription = product ? parseDescription(product.description) : { main: '', top: '', heart: '', base: '' }
+
+  // Debug: Log parsed sections
+  if (product) {
+    console.log('📝 Original description:', product.description)
+    console.log('✂️ Parsed sections:', parsedDescription)
+  }
+
+  const handleToggleWishlist = () => {
+    // Check if user is logged in
+    if (!user) {
+      toast.error("Please sign in to save items to wishlist")
+      return
+    }
+
+    if (product) {
+      const isFavorite = isInWishlist(product.id)
+      toggleWishlist(product.id)
+
+      if (isFavorite) {
+        toast.success(`Removed from wishlist`)
+      } else {
+        toast.success(`Added to wishlist!`)
+      }
+    }
+  }
+
+  const isFavorite = product ? isInWishlist(product.id) : false
+
 
   const images = product.images || [product.image]
 
@@ -60,9 +172,8 @@ export default function ProductDetail() {
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
-                    className={`aspect-square rounded-lg overflow-hidden ${
-                      selectedImage === index ? "ring-2 ring-brand-gold" : ""
-                    }`}
+                    className={`aspect-square rounded-lg overflow-hidden cursor-pointer ${selectedImage === index ? "ring-2 ring-brand-gold" : ""
+                      }`}
                   >
                     <img
                       src={img}
@@ -80,11 +191,38 @@ export default function ProductDetail() {
             <h1 className="font-serif text-5xl mb-4 text-brand-black">
               {product.name}
             </h1>
-            <p className="text-4xl text-brand-gold mb-8">${product.price}</p>
-
-            <p className="text-gray-600 leading-relaxed mb-8">
-              {product.description}
+            <p className="text-4xl text-brand-gold mb-8">
+              ${selectedVariant ? selectedVariant.price : product.price}
             </p>
+
+            {parsedDescription.main && (
+              <p className="text-gray-600 leading-relaxed mb-8">
+                {parsedDescription.main}
+              </p>
+            )}
+
+            {/* Size Selector - Variant Options */}
+            {variants && variants.length > 0 && (
+              <div className="mb-8">
+                <label className="block text-sm uppercase tracking-wider mb-3">
+                  Bottle Size
+                </label>
+                <div className="flex gap-3">
+                  {variants.map((variant) => (
+                    <button
+                      key={variant.id}
+                      onClick={() => setSelectedVariant(variant)}
+                      className={`cursor-pointer px-6 py-2.5 border-2 text-sm uppercase tracking-wider transition-all ${selectedVariant?.id === variant.id
+                        ? 'bg-black text-white border-black'
+                        : 'border-gray-300 hover:border-black bg-white text-black'
+                        }`}
+                    >
+                      {variant.size}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Quantity Selector */}
             <div className="mb-8">
@@ -94,7 +232,7 @@ export default function ProductDetail() {
               <div className="flex items-center gap-4">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-10 h-10 border border-gray-300 hover:border-brand-gold transition-colors"
+                  className="w-10 h-10 border border-gray-300 hover:border-brand-gold transition-colors cursor-pointer"
                 >
                   -
                 </button>
@@ -103,7 +241,7 @@ export default function ProductDetail() {
                 </span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="w-10 h-10 border border-gray-300 hover:border-brand-gold transition-colors"
+                  className="w-10 h-10 border border-gray-300 hover:border-brand-gold transition-colors cursor-pointer"
                 >
                   +
                 </button>
@@ -114,18 +252,24 @@ export default function ProductDetail() {
             <div className="flex gap-4 mb-8">
               <button
                 onClick={handleAddToCart}
-                className="flex-1 px-8 py-4 bg-brand-black text-white uppercase tracking-wider text-sm hover:bg-brand-gold transition-colors flex items-center justify-center gap-2"
+                className="cursor-pointer flex-1 px-8 py-4 bg-brand-black text-white uppercase tracking-wider text-sm hover:bg-black transition-colors flex items-center justify-center gap-2 cursor-pointer"
               >
                 <ShoppingCart size={18} />
                 Add to Cart
               </button>
-              <button className="px-4 py-4 border border-gray-300 hover:border-brand-gold transition-colors">
-                <Heart size={20} />
+              <button
+                onClick={handleToggleWishlist}
+                className={`px-4 py-4 border transition-colors cursor-pointer ${isFavorite
+                  ? 'border-brand-gold bg-brand-gold/10 text-brand-gold'
+                  : 'border-gray-300 hover:border-brand-gold'
+                  }`}
+              >
+                <Heart size={20} fill={isFavorite ? 'currentColor' : 'none'} />
               </button>
             </div>
 
             {/* Product Details */}
-            <div className="border-t border-gray-200 pt-8">
+            {/* <div className="border-t border-gray-200 pt-8">
               <h3 className="uppercase tracking-wider text-sm font-semibold mb-4">
                 Product Details
               </h3>
@@ -135,7 +279,50 @@ export default function ProductDetail() {
                 <li>• Handcrafted in small batches</li>
                 <li>• Ships within 2-3 business days</li>
               </ul>
-            </div>
+            </div> */}
+
+            {/* Fragrance Notes - Parsed from Shopify Description */}
+            {(parsedDescription.top || parsedDescription.heart || parsedDescription.base) && (
+              <div className="border-t border-gray-200 pt-8 mt-6">
+                <h3 className="uppercase tracking-wider text-sm font-semibold mb-6">
+                  Fragrance Notes
+                </h3>
+                <div className="space-y-6">
+                  {parsedDescription.top && (
+                    <div>
+                      <h4 className="uppercase tracking-wider text-xs font-semibold mb-2 text-gray-900">
+                        TOP
+                      </h4>
+                      <p className="text-gray-600 text-sm leading-relaxed">
+                        {parsedDescription.top}
+                      </p>
+                    </div>
+                  )}
+
+                  {parsedDescription.heart && (
+                    <div>
+                      <h4 className="uppercase tracking-wider text-xs font-semibold mb-2 text-gray-900">
+                        HEART
+                      </h4>
+                      <p className="text-gray-600 text-sm leading-relaxed">
+                        {parsedDescription.heart}
+                      </p>
+                    </div>
+                  )}
+
+                  {parsedDescription.base && (
+                    <div>
+                      <h4 className="uppercase tracking-wider text-xs font-semibold mb-2 text-gray-900">
+                        BASE
+                      </h4>
+                      <p className="text-gray-600 text-sm leading-relaxed">
+                        {parsedDescription.base}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -2,7 +2,7 @@ import { motion, useScroll } from "framer-motion"
 import { Menu, Search, ShoppingBag, User } from "lucide-react"
 import React from "react"
 import { Link, useLocation } from "react-router-dom"
-import logoImg from "../assets/images/aggaroud/logo/logo.png"
+import logoImg from "../assets/images/aggaroud/logo/agaar-oud-black.png"
 import { useCart } from "../contexts/CartContext"
 import AccountDropdown from "./AccountDropdown"
 import MobileMenu from "./MobileMenu"
@@ -75,12 +75,19 @@ export default function Navbar() {
           animate={{ opacity: isHomePage && !isScrolled ? 0 : 1 }}
           transition={isHomePage ? logoTransition : { duration: 0 }}
         >
-          <Link
+          {/* <Link
             to="/contact"
             className="uppercase tracking-[0.3em] text-[10px] font-semibold hover:text-brand-gold transition-colors cursor-pointer"
           >
             Contact Us
-          </Link>
+          </Link> */}
+          {/* Hamburger Menu */}
+          <button
+            onClick={() => setIsMobileMenuOpen(true)}
+            className="text-brand-black hover:text-brand-gold active:text-brand-gold transition-colors cursor-pointer"
+          >
+            <Menu size={24} />
+          </button>
         </motion.div>
 
         {/* Center Logo - Shrinks fast before background appears */}
@@ -88,7 +95,7 @@ export default function Navbar() {
           className="flex-1 flex justify-center items-center relative"
           animate={{
             marginTop: isScrolled ? "0px" : "350px",
-            scale: isHomePage && !isScrolled ? 4 : 1.2,
+            scale: isHomePage && !isScrolled ? 2 : 1,
           }}
           transition={isHomePage ? logoTransition : { duration: 0 }}
           style={{
@@ -141,7 +148,7 @@ export default function Navbar() {
           </Link>
           <button
             onClick={() => setIsMobileMenuOpen(true)}
-            className="hover:text-brand-gold transition-colors cursor-pointer"
+            className="md:hidden hover:text-brand-gold transition-colors cursor-pointer"
           >
             <Menu size={20} strokeWidth={1} />
           </button>
@@ -151,9 +158,10 @@ export default function Navbar() {
       {/* Mobile Navbar - Simplified Always-Visible */}
       <header className="md:hidden fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm">
         <div className="flex items-center justify-between px-4 py-4">
+
           {/* Logo */}
           <Link to="/" className="flex-1">
-            <img src={logoImg} alt="Agaar Oud" className="h-8 object-contain" />
+            <img src={logoImg} alt="Agaar Oud" className="h-4 object-contain" />
           </Link>
 
           {/* Mobile Actions - Right Side Icons (Gucci Style: Bag, Account, Search, Menu) */}
@@ -198,7 +206,7 @@ export default function Navbar() {
             {/* Hamburger Menu */}
             <button
               onClick={() => setIsMobileMenuOpen(true)}
-              className="text-brand-black hover:text-brand-gold active:text-brand-gold transition-colors cursor-pointer"
+              className=" text-brand-black hover:text-brand-gold active:text-brand-gold transition-colors cursor-pointer"
             >
               <Menu size={24} />
             </button>

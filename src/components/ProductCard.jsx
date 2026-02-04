@@ -44,9 +44,8 @@ export default function ProductCard({ product }) {
           <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <button
               onClick={handleToggleWishlist}
-              className={`bg-white p-2 rounded-full hover:bg-brand-gold hover:text-white transition-colors cursor-pointer ${
-                isFavorite ? "text-brand-gold" : ""
-              }`}
+              className={`bg-white p-2 rounded-full hover:bg-brand-gold hover:text-white transition-colors cursor-pointer ${isFavorite ? "text-brand-gold" : ""
+                }`}
             >
               <Heart
                 size={18}
@@ -59,7 +58,7 @@ export default function ProductCard({ product }) {
           {/* Quick Add to Cart */}
           <button
             onClick={handleAddToCart}
-            className="absolute bottom-4 left-4 right-4 bg-white text-brand-black px-6 py-3 uppercase tracking-wider text-xs font-semibold opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-brand-gold hover:text-white flex items-center justify-center gap-2 cursor-pointer"
+            className="cursor-pointer absolute bottom-4 left-4 right-4 bg-white text-brand-black px-6 py-3 uppercase tracking-wider text-xs font-semibold opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-black hover:text-white flex items-center justify-center gap-2 cursor-pointer"
           >
             <ShoppingCart size={16} />
             Quick Add
@@ -68,11 +67,11 @@ export default function ProductCard({ product }) {
 
         {/* Product Info */}
         <div>
-          <h3 className="font-serif text-xl mb-2 text-brand-black group-hover:text-brand-gold transition-colors">
+          <h3 className="font-serif text-xl mb-2 text-brand-black group-hover:text-black transition-colors">
             {product.name}
           </h3>
           <p className="text-gray-600 text-sm mb-2">{product.category}</p>
-          <p className="text-brand-gold font-semibold text-lg">
+          <p className="text-brand-black font-semibold text-lg">
             ${product.price}
           </p>
         </div>

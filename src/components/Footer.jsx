@@ -1,3 +1,4 @@
+import footerLogoImg from "../assets/images/aggaroud/logo/agaar-oud-white.png"
 export default function Footer() {
   return (
     <footer className="bg-brand-black text-white py-16">
@@ -5,9 +6,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
           <div className="md:col-span-2">
-            <h3 className="font-serif text-2xl mb-4 text-brand-gold">
-              AGAAR OUD
-            </h3>
+            <img src={footerLogoImg} alt="Agaar Oud" className="h-6 object-contain mb-4" />
             <p className="text-white/70 text-sm leading-relaxed mb-6 max-w-md">
               Crafting the finest oud fragrances from the rarest agarwood. A
               legacy of luxury and tradition.
