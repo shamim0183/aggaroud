@@ -61,7 +61,51 @@ export default function Cart() {
     .filter((p) => !cartProductIds.includes(p.id) && p.featured)
     .slice(0, 3)
 
-  const handleCheckout = async () => {
+  // Handle PayPal checkout (opens Shopify checkout in popup)
+  const handlePayPalCheckout = async () => {
+    try {
+      // Show loading toast
+      const loadingToast = toast.loading("Opening checkout...")
+
+      // Create Shopify checkout with cart items
+      const checkoutUrl = await createCheckout(cart)
+
+      // Dismiss loading toast
+      toast.dismiss(loadingToast)
+
+      // Success message
+      toast.success("Opening PayPal checkout...")
+
+      // Open Shopify checkout in popup window
+      const width = 500
+      const height = 700
+      const left = window.screen.width / 2 - width / 2
+      const top = window.screen.height / 2 - height / 2
+
+      const popup = window.open(
+        checkoutUrl,
+        'Shopify Checkout',
+        `width=${width},height=${height},top=${top},left=${left},toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes`
+      )
+
+      // Focus on the popup window
+      if (popup) {
+        popup.focus()
+      } else {
+        // If popup was blocked, fallback to redirect
+        toast.error("Popup blocked. Redirecting...")
+        setTimeout(() => {
+          window.location.href = checkoutUrl
+        }, 1000)
+      }
+    } catch (error) {
+      console.error("Checkout error:", error)
+      toast.error("Failed to create checkout. Please try again.")
+    }
+  }
+
+  // Handle more payment options (redirects to Shopify checkout)
+  const handleMoreOptions = async () => {
     try {
       // Show loading toast
       const loadingToast = toast.loading("Creating checkout...")
@@ -72,10 +116,7 @@ export default function Cart() {
       // Dismiss loading toast
       toast.dismiss(loadingToast)
 
-      // Success message
-      toast.success("Redirecting to secure checkout...")
-
-      // Redirect to Shopify checkout page (includes PayPal and all payment options)
+      // Redirect to Shopify checkout page (full page)
       window.location.href = checkoutUrl
     } catch (error) {
       console.error("Checkout error:", error)
@@ -139,8 +180,8 @@ export default function Cart() {
               {/* Cart Items List - Smart Sticky with auto scroll for many items */}
               <div
                 className={`space-y-6 ${cart.length >= 5
-                    ? 'lg:sticky lg:top-24 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto lg:pr-4'
-                    : ''
+                  ? 'lg:sticky lg:top-24 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto lg:pr-4'
+                  : ''
                   }`}
                 style={{
                   scrollbarWidth: 'thin',
@@ -397,7 +438,7 @@ export default function Cart() {
                   transition={{ duration: 0.6, ease: "easeOut" }}
                 >
                   <motion.button
-                    onClick={handleCheckout}
+                    onClick={handlePayPalCheckout}
                     className="w-full bg-[#FFC439] hover:bg-[#F7B731] text-[#003087] py-4 rounded font-bold text-lg transition-all duration-300 transform hover:scale-[1.02] shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center gap-2 overflow-hidden"
                     initial="hidden"
                     whileInView="visible"
@@ -460,12 +501,12 @@ export default function Cart() {
                     </motion.svg>
                   </motion.button>
 
-                  <button
-                    onClick={handleCheckout}
+                  {/* <button
+                    onClick={handleMoreOptions}
                     className="w-full text-center text-sm text-gray-600 hover:text-brand-black transition-colors cursor-pointer underline"
                   >
                     More payment options
-                  </button>
+                  </button> */}
                 </motion.div>
 
                 <Link
