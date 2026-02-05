@@ -9,6 +9,7 @@ import {
   X,
   Truck,
 } from "lucide-react"
+import { motion } from "framer-motion"
 import { useState } from "react"
 import { toast } from "react-hot-toast"
 import { Link, useNavigate } from "react-router-dom"
@@ -135,8 +136,17 @@ export default function Cart() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             {/* Cart Items */}
             <div className="lg:col-span-2">
-              {/* Cart Items List */}
-              <div className="space-y-6">
+              {/* Cart Items List - Smart Sticky with auto scroll for many items */}
+              <div
+                className={`space-y-6 ${cart.length >= 5
+                    ? 'lg:sticky lg:top-24 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto lg:pr-4'
+                    : ''
+                  }`}
+                style={{
+                  scrollbarWidth: 'thin',
+                  scrollbarColor: '#D4AF37 #f3f4f6'
+                }}
+              >
                 {cart.map((item) => (
                   <div
                     key={item.id}
@@ -379,18 +389,49 @@ export default function Cart() {
                 </div>
 
                 {/* PayPal Style Checkout Button */}
-                <div className="space-y-3 mb-4">
-                  <button
+                <motion.div
+                  className="space-y-3 mb-4"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.8 }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                >
+                  <motion.button
                     onClick={handleCheckout}
                     className="w-full bg-[#FFC439] hover:bg-[#F7B731] text-[#003087] py-4 rounded font-bold text-lg transition-all duration-300 transform hover:scale-[1.02] shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center gap-2 overflow-hidden"
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.8 }}
+                    variants={{
+                      hidden: {},
+                      visible: {
+                        transition: {
+                          staggerChildren: 0.2,
+                          delayChildren: 0.6
+                        }
+                      }
+                    }}
                   >
-                    <span className="font-bold animate-slideInRight">Pay with</span>
-                    <svg
+                    <motion.span
+                      className="font-bold"
+                      variants={{
+                        hidden: { opacity: 0, x: -20 },
+                        visible: { opacity: 1, x: 0 }
+                      }}
+                      transition={{ duration: 0.5, ease: "easeOut" }}
+                    >
+                      Pay with
+                    </motion.span>
+                    <motion.svg
                       viewBox="0 0 124 33"
-                      className="h-7 animate-fadeIn"
+                      className="h-7"
                       xmlns="http://www.w3.org/2000/svg"
                       preserveAspectRatio="xMidYMid"
-                      style={{ animationDelay: '0.2s', opacity: 0, animationFillMode: 'forwards' }}
+                      variants={{
+                        hidden: { opacity: 0 },
+                        visible: { opacity: 1 }
+                      }}
+                      transition={{ duration: 0.5, ease: "easeOut" }}
                     >
                       <path
                         fill="#003087"
@@ -416,8 +457,8 @@ export default function Cart() {
                         fill="#003087"
                         d="M9.614 7.699a1.169 1.169 0 0 1 1.159-.991h7.352c.871 0 1.684.057 2.426.177a9.757 9.757 0 0 1 1.481.353c.365.121.704.264 1.017.429.368-2.347-.003-3.945-1.272-5.392C20.378.682 17.853 0 14.622 0h-9.38c-.66 0-1.223.48-1.325 1.133L.01 25.898a.806.806 0 0 0 .795.932h5.791l1.454-9.225 1.564-9.906z"
                       />
-                    </svg>
-                  </button>
+                    </motion.svg>
+                  </motion.button>
 
                   <button
                     onClick={handleCheckout}
@@ -425,7 +466,7 @@ export default function Cart() {
                   >
                     More payment options
                   </button>
-                </div>
+                </motion.div>
 
                 <Link
                   to="/products"

@@ -26,12 +26,32 @@ h6 {
   @apply font-serif;
 }
 
-/* PayPal Button Animations */
+/* Custom Scrollbar for Cart Items */
+.lg\:overflow-y-auto::-webkit-scrollbar {
+  width: 8px;
+}
+
+.lg\:overflow-y-auto::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 4px;
+}
+
+.lg\:overflow-y-auto::-webkit-scrollbar-thumb {
+  background: #d4af37;
+  border-radius: 4px;
+}
+
+.lg\:overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: #c19b2e;
+}
+
+/* PayPal Button Animations - Legacy (now using Framer Motion) */
 @keyframes slideInRight {
   from {
     transform: translateX(20px);
     opacity: 0;
   }
+
   to {
     transform: translateX(0);
     opacity: 1;
@@ -42,6 +62,7 @@ h6 {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
