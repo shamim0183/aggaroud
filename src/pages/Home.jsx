@@ -84,7 +84,7 @@ export default function Home() {
       <HeroSlider />
 
       {/* Featured Products Section */}
-      <section className="py-24 px-8 max-w-7xl mx-auto">
+      {/* <section className="py-24 px-8 max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2
             ref={featuredTitleRef}
@@ -99,7 +99,7 @@ export default function Home() {
         <div ref={featuredGridRef}>
           <ProductGrid products={featuredProducts} />
         </div>
-      </section>
+      </section> */}
 
       {/* Shop by Collection Section */}
       <section className="py-24 px-8 bg-gray-50">

@@ -25,3 +25,32 @@ h5,
 h6 {
   @apply font-serif;
 }
+
+/* PayPal Button Animations */
+@keyframes slideInRight {
+  from {
+    transform: translateX(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-slideInRight {
+  animation: slideInRight 0.5s ease-out;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.8s ease-in;
+}
