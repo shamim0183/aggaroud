@@ -37,7 +37,7 @@ export default function Women() {
       <div className="min-h-screen py-32 px-8">
         <div className="max-w-7xl mx-auto text-center">
           <div className="animate-pulse">
-            <h1 className="font-serif text-3xl md:text-5xl mb-4 text-brand-black">
+            <h1 className="font-serif text-5xl mb-4 text-brand-black">
               Loading Women's Collection...
             </h1>
             <p className="text-gray-600">Fetching from Shopify</p>
@@ -52,7 +52,7 @@ export default function Women() {
     return (
       <div className="min-h-screen py-32 px-8">
         <div className="max-w-7xl mx-auto text-center">
-          <h1 className="font-serif text-3xl md:text-5xl mb-4 text-red-600">
+          <h1 className="font-serif text-5xl mb-4 text-red-600">
             Error Loading Products
           </h1>
           <p className="text-gray-600 mb-4">{error}</p>
@@ -127,7 +127,7 @@ export default function Women() {
 
       {/* Collection Description */}
       <section className="py-16 px-8 max-w-4xl mx-auto text-center">
-        <h2 className="font-serif text-2xl md:text-4xl mb-6 text-brand-black">
+        <h2 className="font-serif text-4xl mb-6 text-brand-black">
           Timeless Femininity
         </h2>
         <p className="text-gray-700 leading-relaxed font-light text-lg mb-4">
@@ -155,7 +155,7 @@ export default function Women() {
       {/* Fragrance Notes Section */}
       {/* <section className="py-24 px-8 bg-gray-50">
         <div className="max-w-7xl mx-auto">
-          <h3 className="font-serif text-2xl md:text-4xl text-center mb-16 text-brand-black">
+          <h3 className="font-serif text-4xl text-center mb-16 text-brand-black">
             Key Notes in Women's Fragrances
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
@@ -198,7 +198,7 @@ export default function Women() {
 
       {/* CTA Section */}
       <section className="py-20 px-8 bg-gray-50 text-center">
-        <h3 className="font-serif text-2xl md:text-4xl mb-6 text-brand-black">
+        <h3 className="font-serif text-4xl mb-6 text-brand-black">
           Discover Your Signature
         </h3>
         <p className="text-gray-700 font-light mb-8 max-w-2xl mx-auto">

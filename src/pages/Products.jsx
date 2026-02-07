@@ -30,7 +30,7 @@ export default function Products() {
       <div className="min-h-screen py-32 px-8">
         <div className="max-w-7xl mx-auto text-center">
           <div className="animate-pulse">
-            <h1 className="font-serif text-3xl md:text-5xl mb-4 text-brand-black">
+            <h1 className="font-serif text-5xl mb-4 text-brand-black">
               Loading Products...
             </h1>
             <p className="text-gray-600">Fetching from Shopify</p>
@@ -44,7 +44,7 @@ export default function Products() {
     return (
       <div className="min-h-screen py-32 px-8">
         <div className="max-w-7xl mx-auto text-center">
-          <h1 className="font-serif text-3xl md:text-5xl mb-4 text-red-600">
+          <h1 className="font-serif text-5xl mb-4 text-red-600">
             Error Loading Products
           </h1>
           <p className="text-gray-600 mb-4">{error}</p>
@@ -63,7 +63,7 @@ export default function Products() {
     <div className="min-h-screen py-32 px-8">
       <div className="max-w-7xl mx-auto">
         <div className="mb-16">
-          <h1 className="font-serif text-3xl md:text-5xl mb-4 text-brand-black">
+          <h1 className="font-serif text-5xl mb-4 text-brand-black">
             Our Collection
           </h1>
           <p className="text-gray-600">
