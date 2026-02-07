@@ -107,8 +107,14 @@ export async function createCheckout(cartItems) {
       lineItems,
     )
 
+    // Replace myshopify.com domain with custom domain
+    const checkoutUrl = checkoutWithItems.webUrl.replace(
+      "iqhvt1-wx.myshopify.com",
+      "www.agaaroud.com",
+    )
+
     // Return checkout URL to redirect user to Shopify payment page
-    return checkoutWithItems.webUrl
+    return checkoutUrl
   } catch (error) {
     console.error("Error creating checkout:", error)
     throw error
