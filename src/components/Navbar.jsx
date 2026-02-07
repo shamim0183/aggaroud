@@ -93,6 +93,10 @@ export default function Navbar() {
         {/* Center Logo - Shrinks fast before background appears */}
         <motion.div
           className="flex-1 flex justify-center items-center relative"
+          initial={{
+            marginTop: isHomePage && !isScrolled ? "350px" : "0px",
+            scale: isHomePage && !isScrolled ? 2 : 0.8,
+          }}
           animate={{
             marginTop: isScrolled ? "0px" : "350px",
             scale: isHomePage && !isScrolled ? 2 : 0.8,
@@ -114,6 +118,7 @@ export default function Navbar() {
         {/* Right Icons - Appear quickly */}
         <motion.div
           className="flex-1 flex justify-end items-center gap-6 text-brand-black"
+          initial={{ opacity: isScrolled ? 1 : 0 }}
           animate={{ opacity: isScrolled ? 1 : 0 }}
           transition={logoTransition}
         >
@@ -158,7 +163,6 @@ export default function Navbar() {
       {/* Mobile Navbar - Simplified Always-Visible */}
       <header className="md:hidden fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm">
         <div className="flex items-center justify-between px-4 py-4">
-
           {/* Logo */}
           <Link to="/" className="flex-1">
             <img src={logoImg} alt="Agaar Oud" className="h-4 object-contain" />
