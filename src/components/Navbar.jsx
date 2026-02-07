@@ -95,7 +95,7 @@ export default function Navbar() {
           className="flex-1 flex justify-center items-center relative"
           animate={{
             marginTop: isScrolled ? "0px" : "350px",
-            scale: isHomePage && !isScrolled ? 2 : 1,
+            scale: isHomePage && !isScrolled ? 2 : 0.8,
           }}
           transition={isHomePage ? logoTransition : { duration: 0 }}
           style={{

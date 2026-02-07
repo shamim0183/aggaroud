@@ -1,6 +1,7 @@
 import { motion } from "framer-motion"
+import gsap from "gsap"
 import { Eye, EyeOff, Mail, UserPlus } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { toast } from "react-hot-toast"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import { useAuth } from "../contexts/AuthContext"
@@ -19,6 +20,50 @@ export default function Login() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const redirectTo = searchParams.get("redirect") || "/"
+
+  // GSAP refs for smooth animations
+  const passwordHintsRef = useRef(null)
+  const confirmPasswordRef = useRef(null)
+
+  // Animate password hints
+  useEffect(() => {
+    if (passwordHintsRef.current) {
+      if (isSignup) {
+        gsap.fromTo(
+          passwordHintsRef.current,
+          { height: 0, opacity: 0 },
+          { height: "auto", opacity: 1, duration: 0.5, ease: "power2.out" },
+        )
+      } else {
+        gsap.to(passwordHintsRef.current, {
+          height: 0,
+          opacity: 0,
+          duration: 0.4,
+          ease: "power2.in",
+        })
+      }
+    }
+  }, [isSignup])
+
+  // Animate confirm password field
+  useEffect(() => {
+    if (confirmPasswordRef.current) {
+      if (isSignup) {
+        gsap.fromTo(
+          confirmPasswordRef.current,
+          { height: 0, opacity: 0 },
+          { height: "auto", opacity: 1, duration: 0.5, ease: "power2.out" },
+        )
+      } else {
+        gsap.to(confirmPasswordRef.current, {
+          height: 0,
+          opacity: 0,
+          duration: 0.4,
+          ease: "power2.in",
+        })
+      }
+    }
+  }, [isSignup])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -202,16 +247,17 @@ export default function Login() {
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
-              {isSignup && (
+              {/* Password hints with GSAP animation */}
+              <div ref={passwordHintsRef} style={{ overflow: "hidden" }}>
                 <p className="text-xs text-gray-500 mt-2">
                   • Minimum 6 characters
                   <br />• Please use a strong password
                 </p>
-              )}
+              </div>
             </div>
 
-            {/* Confirm Password (Signup only) */}
-            {isSignup && (
+            {/* Confirm Password with GSAP animation */}
+            <div ref={confirmPasswordRef} style={{ overflow: "hidden" }}>
               <div>
                 <label
                   htmlFor="confirmPassword"
@@ -247,7 +293,7 @@ export default function Login() {
                   </button>
                 </div>
               </div>
-            )}
+            </div>
 
             {/* Submit Button */}
             <button
@@ -262,7 +308,7 @@ export default function Login() {
                   : "CONTINUE"}
             </button>
           </form>
-
+          {/* </div> */}
           {/* Toggle Sign In / Sign Up */}
           <div className="mt-8 text-center">
             <button
