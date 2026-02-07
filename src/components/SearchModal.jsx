@@ -79,7 +79,10 @@ export default function SearchModal({ isOpen, onClose }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={onClose}
+            onClick={() => {
+              setSearchQuery("")
+              onClose()
+            }}
             className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
           />
 
@@ -97,7 +100,10 @@ export default function SearchModal({ isOpen, onClose }) {
                 Search Products
               </h3>
               <button
-                onClick={onClose}
+                onClick={() => {
+                  setSearchQuery("")
+                  onClose()
+                }}
                 className="w-10 h-10 rounded-full hover:bg-gray-100 flex items-center justify-center transition-colors cursor-pointer"
               >
                 <X size={20} />
