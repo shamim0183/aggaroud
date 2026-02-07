@@ -205,16 +205,16 @@ export default function Women() {
           Each woman deserves a fragrance as unique as she is. Explore our
           collection or let our experts help you find the perfect scent.
         </p>
-        <div className="flex gap-4 justify-center flex-wrap">
+        <div className="flex flex-col md:flex-row gap-4 justify-center">
           <Link
             to="/products"
-            className="border-2 border-brand-black text-brand-black px-8 py-3 text-sm uppercase tracking-widest font-semibold hover:bg-brand-black hover:text-white transition-all duration-300"
+            className="w-full md:w-auto border-2 border-brand-black text-brand-black px-8 py-3 text-sm uppercase tracking-widest font-semibold hover:bg-brand-black hover:text-white transition-all duration-300 text-center"
           >
             View All Products
           </Link>
           <Link
             to="/contact"
-            className="bg-brand-gold text-white px-8 py-3 text-sm uppercase tracking-widest font-semibold hover:bg-brand-gold/90 transition-colors"
+            className="w-full md:w-auto bg-brand-gold text-white px-8 py-3 text-sm uppercase tracking-widest font-semibold hover:bg-brand-gold/90 transition-colors text-center"
           >
             Get Personalized Help
           </Link>
