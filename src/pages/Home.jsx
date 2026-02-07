@@ -86,7 +86,7 @@ export default function Home() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h2 className="font-serif text-4xl mb-4 text-brand-black animate-pulse">
+          <h2 className="font-serif text-2xl md:text-4xl mb-4 text-brand-black animate-pulse">
             Loading...
           </h2>
           <p className="text-gray-600">Fetching products from Shopify</p>

@@ -10,8 +10,8 @@ import {
   Truck,
 } from "lucide-react"
 import { useState } from "react"
-import { useNavigate } from "react-router-dom";
-import { useCart } from "../contexts/CartContext";
+import { useNavigate } from "react-router-dom"
+import { useCart } from "../contexts/CartContext"
 
 const faqs = [
   {
@@ -76,7 +76,7 @@ export default function Shipping() {
       {/* Shipping Options */}
       <section className="py-20 px-8 bg-gray-50">
         <div className="max-w-7xl mx-auto">
-          <h2 className="font-serif text-4xl text- mb-12 text-center text-brand-black">
+          <h2 className="font-serif text-2xl md:text-4xl text- mb-12 text-center text-brand-black">
             Shipping Methods
           </h2>
 
@@ -92,7 +92,7 @@ export default function Shipping() {
                 Standard Shipping
               </h3>
               <p className="text-gray-600 font-light mb-4">5-7 business days</p>
-              <p className="text-2xl font-semibold text-brand-gold mb-2">
+              <p className="text-xl md:text-2xl font-semibold text-brand-gold mb-2">
                 $9.99
               </p>
               <p className="text-sm text-gray-500 mb-6">
@@ -125,7 +125,7 @@ export default function Shipping() {
                   <p className="text-gray-600 font-light mb-4">
                     2-3 business days
                   </p>
-                  <p className="text-2xl font-semibold text-brand-gold mb-2">
+                  <p className="text-xl md:text-2xl font-semibold text-brand-gold mb-2">
                     $24.99
                   </p>
                   <p className="text-sm text-gray-500 mb-6">
@@ -155,7 +155,7 @@ export default function Shipping() {
               <p className="text-gray-600 font-light mb-4">
                 7-14 business days
               </p>
-              <p className="text-2xl font-semibold text-brand-gold mb-2">
+              <p className="text-xl md:text-2xl font-semibold text-brand-gold mb-2">
                 From $39.99
               </p>
               <p className="text-sm text-gray-500 mb-6">Worldwide delivery</p>
@@ -174,7 +174,7 @@ export default function Shipping() {
       {/* Shipping Info */}
       <section className="py-20 px-8">
         <div className="max-w-6xl mx-auto">
-          <h2 className="font-serif text-4xl mb-12 text-center text-brand-black">
+          <h2 className="font-serif text-2xl md:text-4xl mb-12 text-center text-brand-black">
             Important Information
           </h2>
 
@@ -248,7 +248,7 @@ export default function Shipping() {
       {/* Tracking Section */}
       <section className="py-20 px-8 bg-gray-50">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="font-serif text-4xl mb-6 text-brand-black">
+          <h2 className="font-serif text-2xl md:text-4xl mb-6 text-brand-black">
             Order Tracking
           </h2>
           <p className="text-gray-700 font-light mb-8 leading-relaxed">
@@ -274,7 +274,7 @@ export default function Shipping() {
       {/* FAQs */}
       <section className="py-20 px-8">
         <div className="max-w-4xl mx-auto">
-          <h2 className="font-serif text-4xl mb-12 text-center text-brand-black">
+          <h2 className="font-serif text-2xl md:text-4xl mb-12 text-center text-brand-black">
             Shipping FAQs
           </h2>
 

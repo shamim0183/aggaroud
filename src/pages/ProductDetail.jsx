@@ -60,7 +60,7 @@ export default function ProductDetail() {
       <div className="min-h-screen py-32 px-8">
         <div className="max-w-7xl mx-auto text-center">
           <div className="animate-pulse">
-            <h1 className="font-serif text-5xl mb-4 text-brand-black">
+            <h1 className="font-serif text-3xl md:text-5xl mb-4 text-brand-black">
               Loading Product...
             </h1>
             <p className="text-gray-600">Fetching from Shopify</p>
@@ -74,7 +74,9 @@ export default function ProductDetail() {
     return (
       <div className="min-h-screen py-32 px-8">
         <div className="max-w-7xl mx-auto text-center">
-          <h1 className="font-serif text-4xl mb-4">Product not found</h1>
+          <h1 className="font-serif text-2xl md:text-4xl mb-4">
+            Product not found
+          </h1>
           <Link to="/products" className="text-brand-gold hover:underline">
             Return to products
           </Link>
@@ -210,10 +212,10 @@ export default function ProductDetail() {
 
           {/* Product Info */}
           <div>
-            <h1 className="font-serif text-5xl mb-4 text-brand-black">
+            <h1 className="font-serif text-3xl md:text-5xl mb-4 text-brand-black">
               {product.name}
             </h1>
-            <p className="text-4xl text-brand-gold mb-8">
+            <p className="text-2xl md:text-4xl text-brand-gold mb-8">
               ${selectedVariant ? selectedVariant.price : product.price}
             </p>
 
