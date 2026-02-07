@@ -2,11 +2,29 @@ import { AnimatePresence, motion } from "framer-motion"
 import { Search, X } from "lucide-react"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import productsData from "../data/products.json"
+import { fetchProducts } from "../lib/shopify"
 
 export default function SearchModal({ isOpen, onClose }) {
   const [searchQuery, setSearchQuery] = useState("")
   const [searchResults, setSearchResults] = useState([])
+  const [allProducts, setAllProducts] = useState([])
+  const [loading, setLoading] = useState(false)
+
+  // Fetch all products from Shopify when modal opens
+  useEffect(() => {
+    if (isOpen && allProducts.length === 0) {
+      setLoading(true)
+      fetchProducts()
+        .then((products) => {
+          setAllProducts(products)
+          setLoading(false)
+        })
+        .catch((err) => {
+          console.error("Error fetching products for search:", err)
+          setLoading(false)
+        })
+    }
+  }, [isOpen, allProducts.length])
 
   // Lock body scroll when modal is open
   useEffect(() => {
@@ -23,17 +41,20 @@ export default function SearchModal({ isOpen, onClose }) {
 
   // Search products
   useEffect(() => {
-    if (searchQuery.trim()) {
-      const filtered = productsData.filter(
+    if (searchQuery.trim() && allProducts.length > 0) {
+      const filtered = allProducts.filter(
         (product) =>
           product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          product.description.toLowerCase().includes(searchQuery.toLowerCase()),
+          product.description
+            ?.toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          product.vendor?.toLowerCase().includes(searchQuery.toLowerCase()),
       )
       setSearchResults(filtered.slice(0, 5)) // Show max 5 results
     } else {
       setSearchResults([])
     }
-  }, [searchQuery])
+  }, [searchQuery, allProducts])
 
   return (
     <AnimatePresence>
