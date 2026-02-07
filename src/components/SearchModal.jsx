@@ -39,18 +39,32 @@ export default function SearchModal({ isOpen, onClose }) {
     }
   }, [isOpen])
 
-  // Search products
+  // Search products with smart prioritization
   useEffect(() => {
     if (searchQuery.trim() && allProducts.length > 0) {
-      const filtered = allProducts.filter(
-        (product) =>
-          product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          product.description
-            ?.toLowerCase()
-            .includes(searchQuery.toLowerCase()) ||
-          product.vendor?.toLowerCase().includes(searchQuery.toLowerCase()),
-      )
-      setSearchResults(filtered.slice(0, 5)) // Show max 5 results
+      const query = searchQuery.toLowerCase()
+
+      // Separate matches by priority
+      const nameMatches = []
+      const descriptionMatches = []
+
+      allProducts.forEach((product) => {
+        const name = product.name.toLowerCase()
+        const description = product.description?.toLowerCase() || ""
+
+        // Priority 1: Name contains the search query
+        if (name.includes(query)) {
+          nameMatches.push(product)
+        }
+        // Priority 2: Description contains the query (but not in name)
+        else if (description.includes(query)) {
+          descriptionMatches.push(product)
+        }
+      })
+
+      // Combine results: name matches first, then description matches
+      const combined = [...nameMatches, ...descriptionMatches]
+      setSearchResults(combined.slice(0, 5)) // Show max 5 results
     } else {
       setSearchResults([])
     }
