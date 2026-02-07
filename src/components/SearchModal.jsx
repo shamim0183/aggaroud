@@ -108,7 +108,11 @@ export default function SearchModal({ isOpen, onClose }) {
 
             {/* Results */}
             <div className="max-h-96 overflow-y-auto">
-              {searchResults.length > 0 ? (
+              {loading ? (
+                <p className="text-center text-gray-500 py-8">
+                  Loading products...
+                </p>
+              ) : searchResults.length > 0 ? (
                 <div className="space-y-3">
                   {searchResults.map((product) => (
                     <Link
