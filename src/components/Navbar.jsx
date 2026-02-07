@@ -18,7 +18,13 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false)
   const [isSearchOpen, setIsSearchOpen] = React.useState(false)
   const [isAccountOpen, setIsAccountOpen] = React.useState(false)
+  const [isMounted, setIsMounted] = React.useState(false)
   const { getCartCount } = useCart()
+
+  // Mark as mounted after first render to enable animations
+  React.useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   // Update when page changes
   React.useEffect(() => {
@@ -33,7 +39,7 @@ export default function Navbar() {
     })
   }, [scrollY, isHomePage])
 
-  // Fast transition for logo (shrinks quickly)
+  // Smooth transition for logo - no bounce
   const logoTransition = {
     type: "spring",
     stiffness: 120,
@@ -72,6 +78,7 @@ export default function Navbar() {
         {/* Left Action */}
         <motion.div
           className="flex-1 hidden md:flex"
+          initial={{ opacity: isHomePage && !isScrolled ? 0 : 1 }}
           animate={{ opacity: isHomePage && !isScrolled ? 0 : 1 }}
           transition={isHomePage ? logoTransition : { duration: 0 }}
         >
@@ -101,7 +108,9 @@ export default function Navbar() {
             marginTop: isScrolled ? "0px" : "350px",
             scale: isHomePage && !isScrolled ? 2 : 0.8,
           }}
-          transition={isHomePage ? logoTransition : { duration: 0 }}
+          transition={
+            isMounted && isHomePage ? logoTransition : { duration: 0 }
+          }
           style={{
             transformOrigin: "center center",
           }}
