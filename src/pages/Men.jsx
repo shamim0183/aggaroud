@@ -1,13 +1,71 @@
 import { motion } from "framer-motion"
+import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import ProductGrid from "../components/ProductGrid"
-import productsData from "../data/products.json"
+import { fetchProducts } from "../lib/shopify"
 
 export default function Men() {
-  // Filter products for men
-  const menProducts = productsData.filter(
-    (product) => product.gender === "Men" || product.gender === "Unisex",
-  )
+  const [products, setProducts] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  // Fetch and filter products for men (case-insensitive)
+  useEffect(() => {
+    async function loadProducts() {
+      try {
+        const allProducts = await fetchProducts()
+        const menProducts = allProducts.filter(
+          (product) =>
+            product.gender?.toLowerCase() === "men" ||
+            product.gender?.toLowerCase() === "unisex",
+        )
+        setProducts(menProducts)
+        setLoading(false)
+      } catch (err) {
+        console.error("Error loading men's products:", err)
+        setError(err.message)
+        setLoading(false)
+      }
+    }
+
+    loadProducts()
+  }, [])
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen py-32 px-8">
+        <div className="max-w-7xl mx-auto text-center">
+          <div className="animate-pulse">
+            <h1 className="font-serif text-5xl mb-4 text-brand-black">
+              Loading Men's Collection...
+            </h1>
+            <p className="text-gray-600">Fetching from Shopify</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen py-32 px-8">
+        <div className="max-w-7xl mx-auto text-center">
+          <h1 className="font-serif text-5xl mb-4 text-red-600">
+            Error Loading Products
+          </h1>
+          <p className="text-gray-600 mb-4">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-6 py-3 bg-brand-black text-white rounded hover:bg-brand-gold transition-colors"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div>
@@ -85,7 +143,13 @@ export default function Men() {
 
       {/* Products Grid */}
       <section className="py-16 px-8 max-w-7xl mx-auto">
-        <ProductGrid products={menProducts} />
+        <div className="mb-8 text-center">
+          <p className="text-gray-600">
+            {products.length} {products.length === 1 ? "product" : "products"}{" "}
+            available
+          </p>
+        </div>
+        <ProductGrid products={products} />
       </section>
 
       {/* Fragrance Notes Section */}

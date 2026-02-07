@@ -1,3 +1,4 @@
+import { motion } from "framer-motion"
 import {
   Check,
   Gift,
@@ -6,18 +7,16 @@ import {
   ShoppingBag,
   Tag,
   Trash2,
-  X,
   Truck,
+  X,
 } from "lucide-react"
-import { motion } from "framer-motion"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { toast } from "react-hot-toast"
 import { Link, useNavigate } from "react-router-dom"
 import ProductGrid from "../components/ProductGrid"
 import { useAuth } from "../contexts/AuthContext"
 import { useCart } from "../contexts/CartContext"
-import { createCheckout } from "../lib/shopify"
-import productsData from "../data/products.json"
+import { createCheckout, fetchProducts } from "../lib/shopify"
 
 export default function Cart() {
   const {
@@ -38,6 +37,23 @@ export default function Cart() {
   const { user } = useAuth()
   const navigate = useNavigate()
   const [promoInput, setPromoInput] = useState("")
+  const [allProducts, setAllProducts] = useState([])
+  const [loadingProducts, setLoadingProducts] = useState(true)
+
+  // Fetch products from Shopify for recommendations
+  useEffect(() => {
+    async function loadProducts() {
+      try {
+        const products = await fetchProducts()
+        setAllProducts(products)
+        setLoadingProducts(false)
+      } catch (error) {
+        console.error("Error loading products:", error)
+        setLoadingProducts(false)
+      }
+    }
+    loadProducts()
+  }, [])
 
   const subtotal = getCartSubtotal()
   const discount = getDiscount()
@@ -55,9 +71,9 @@ export default function Cart() {
   )
   const amountToFreeShipping = Math.max(freeShippingThreshold - subtotal, 0)
 
-  // Get recommended products (exclude cart items, show featured products)
+  // Get recommended products from Shopify (exclude cart items, show featured products)
   const cartProductIds = cart.map((item) => item.id)
-  const recommendedProducts = productsData
+  const recommendedProducts = allProducts
     .filter((p) => !cartProductIds.includes(p.id) && p.featured)
     .slice(0, 3)
 
@@ -84,8 +100,8 @@ export default function Cart() {
 
       const popup = window.open(
         checkoutUrl,
-        'Shopify Checkout',
-        `width=${width},height=${height},top=${top},left=${left},toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes`
+        "Shopify Checkout",
+        `width=${width},height=${height},top=${top},left=${left},toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes`,
       )
 
       // Focus on the popup window
@@ -141,12 +157,12 @@ export default function Cart() {
 
   return (
     <div className="pt-24 min-h-screen bg-white">
-      <div className="max-w-7xl mx-auto px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 py-8 md:py-12">
         {/* Header */}
-        <h1 className="font-serif text-5xl mb-2 text-brand-black">
+        <h1 className="font-serif text-3xl md:text-5xl mb-2 text-brand-black">
           Shopping Cart
         </h1>
-        <p className="text-gray-600 mb-12">
+        <p className="text-gray-600 mb-8 md:mb-12 text-sm md:text-base">
           {cart.length} {cart.length === 1 ? "item" : "items"}
         </p>
 
@@ -179,37 +195,38 @@ export default function Cart() {
             <div className="lg:col-span-2">
               {/* Cart Items List - Smart Sticky with auto scroll for many items */}
               <div
-                className={`space-y-6 ${cart.length >= 5
-                  ? 'lg:sticky lg:top-24 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto lg:pr-4'
-                  : ''
-                  }`}
+                className={`space-y-6 ${
+                  cart.length >= 5
+                    ? "lg:sticky lg:top-24 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto lg:pr-4"
+                    : ""
+                }`}
                 style={{
-                  scrollbarWidth: 'thin',
-                  scrollbarColor: '#D4AF37 #f3f4f6'
+                  scrollbarWidth: "thin",
+                  scrollbarColor: "#D4AF37 #f3f4f6",
                 }}
               >
                 {cart.map((item) => (
                   <div
                     key={item.id}
-                    className="flex gap-6 pb-6 border-b border-gray-200"
+                    className="flex gap-3 md:gap-6 pb-6 border-b border-gray-200"
                   >
                     <img
                       src={item.image}
                       alt={item.name}
-                      className="w-32 h-32 object-cover rounded-sm"
+                      className="w-20 h-20 md:w-32 md:h-32 object-cover rounded-sm flex-shrink-0"
                     />
-                    <div className="flex-1">
-                      <h3 className="font-serif text-xl mb-2 text-brand-black">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-serif text-base md:text-xl mb-1 md:mb-2 text-brand-black truncate">
                         {item.name}
                       </h3>
-                      <p className="text-gray-600 text-sm mb-3">
+                      <p className="text-gray-600 text-xs md:text-sm mb-2 md:mb-3">
                         {item.category}
                       </p>
-                      <p className="text-brand-gold font-semibold text-lg mb-4">
+                      <p className="text-brand-gold font-semibold text-base md:text-lg mb-3 md:mb-4">
                         ${item.price}
                       </p>
 
-                      <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-2 md:gap-4">
                         <div className="flex items-center border border-gray-300 rounded-sm">
                           <button
                             onClick={() =>
@@ -218,18 +235,18 @@ export default function Cart() {
                                 Math.max(1, item.quantity - 1),
                               )
                             }
-                            className="px-4 py-2 hover:bg-gray-50 cursor-pointer"
+                            className="px-2 md:px-4 py-1 md:py-2 hover:bg-gray-50 cursor-pointer text-sm md:text-base"
                           >
                             −
                           </button>
-                          <span className="px-4 py-2 border-x border-gray-300">
+                          <span className="px-2 md:px-4 py-1 md:py-2 border-x border-gray-300 text-sm md:text-base">
                             {item.quantity}
                           </span>
                           <button
                             onClick={() =>
                               updateQuantity(item.id, item.quantity + 1)
                             }
-                            className="px-4 py-2 hover:bg-gray-50 cursor-pointer"
+                            className="px-2 md:px-4 py-1 md:py-2 hover:bg-gray-50 cursor-pointer text-sm md:text-base"
                           >
                             +
                           </button>
@@ -238,7 +255,7 @@ export default function Cart() {
                           onClick={() => removeFromCart(item.id)}
                           className="text-gray-500 hover:text-red-600 transition-colors cursor-pointer"
                         >
-                          <Trash2 size={20} />
+                          <Trash2 size={18} className="md:w-5 md:h-5" />
                         </button>
                       </div>
                     </div>
@@ -249,7 +266,7 @@ export default function Cart() {
 
             {/* Order Summary - Shopify Style */}
             <div className="lg:col-span-1">
-              <div className="bg-gray-50 p-8 rounded-sm sticky top-24">
+              <div className="bg-gray-50 p-4 md:p-8 rounded-sm lg:sticky lg:top-24">
                 <h2 className="font-serif text-2xl mb-6 text-brand-black">
                   Order Summary
                 </h2>
@@ -313,11 +330,11 @@ export default function Cart() {
                           e.key === "Enter" && handleApplyPromo()
                         }
                         placeholder="Enter code"
-                        className="flex-1 px-4 py-3 border-2 border-gray-300 rounded-sm focus:border-brand-gold focus:outline-none text-sm uppercase"
+                        className="flex-1 px-3 md:px-4 py-2 md:py-3 border-2 border-gray-300 rounded-sm focus:border-brand-gold focus:outline-none text-xs md:text-sm uppercase"
                       />
                       <button
                         onClick={handleApplyPromo}
-                        className="px-6 py-3 bg-brand-black text-white rounded-sm hover:bg-brand-gold transition-colors font-semibold text-sm uppercase tracking-wide cursor-pointer"
+                        className="px-4 md:px-6 py-2 md:py-3 bg-brand-black text-white rounded-sm hover:bg-brand-gold transition-colors font-semibold text-xs md:text-sm uppercase tracking-wide cursor-pointer"
                       >
                         Apply
                       </button>
@@ -335,10 +352,11 @@ export default function Cart() {
                       <button
                         key={option.id}
                         onClick={() => selectShipping(option)}
-                        className={`w-full p-4 border-2 rounded-sm transition-all duration-200 text-left cursor-pointer ${selectedShipping.id === option.id
-                          ? "border-brand-gold bg-brand-gold/5"
-                          : "border-gray-200 hover:border-brand-gold/50"
-                          }`}
+                        className={`w-full p-4 border-2 rounded-sm transition-all duration-200 text-left cursor-pointer ${
+                          selectedShipping.id === option.id
+                            ? "border-brand-gold bg-brand-gold/5"
+                            : "border-gray-200 hover:border-brand-gold/50"
+                        }`}
                       >
                         <div className="flex justify-between items-start">
                           <div className="flex-1">
@@ -418,10 +436,10 @@ export default function Cart() {
                   </div>
                   {(isFreeShipping ||
                     appliedPromo?.type === "free_shipping") && (
-                      <p className="text-xs text-green-600">
-                        🎉 You qualified for free shipping!
-                      </p>
-                    )}
+                    <p className="text-xs text-green-600">
+                      🎉 You qualified for free shipping!
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex justify-between text-xl font-semibold mb-8">
@@ -448,16 +466,16 @@ export default function Cart() {
                       visible: {
                         transition: {
                           staggerChildren: 0.2,
-                          delayChildren: 0.6
-                        }
-                      }
+                          delayChildren: 0.6,
+                        },
+                      },
                     }}
                   >
                     <motion.span
                       className="font-bold"
                       variants={{
                         hidden: { opacity: 0, x: -20 },
-                        visible: { opacity: 1, x: 0 }
+                        visible: { opacity: 1, x: 0 },
                       }}
                       transition={{ duration: 0.5, ease: "easeOut" }}
                     >
@@ -470,7 +488,7 @@ export default function Cart() {
                       preserveAspectRatio="xMidYMid"
                       variants={{
                         hidden: { opacity: 0 },
-                        visible: { opacity: 1 }
+                        visible: { opacity: 1 },
                       }}
                       transition={{ duration: 0.5, ease: "easeOut" }}
                     >

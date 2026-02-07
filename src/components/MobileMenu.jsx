@@ -1,12 +1,23 @@
 import { AnimatePresence, motion } from "framer-motion"
 import { gsap } from "gsap"
 import { ChevronRight, X } from "lucide-react"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Link } from "react-router-dom"
 
 export default function MobileMenu({ isOpen, onClose }) {
   const menuItemsRef = useRef([])
   const secondaryItemsRef = useRef([])
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
+
+  // Track window resize for responsive menu direction
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
 
   // Lock body scroll when menu is open
   useEffect(() => {
@@ -25,10 +36,14 @@ export default function MobileMenu({ isOpen, onClose }) {
   // GSAP animation when menu opens
   useEffect(() => {
     if (isOpen) {
+      // Desktop: slide from left (negative), Mobile: slide from right (positive)
+      const xDirection = isMobile ? 30 : -30
+      const xDirectionSecondary = isMobile ? 20 : -20
+
       // Animate menu items in with stagger
       gsap.fromTo(
         menuItemsRef.current,
-        { opacity: 0, x: 30 },
+        { opacity: 0, x: xDirection },
         {
           opacity: 1,
           x: 0,
@@ -42,7 +57,7 @@ export default function MobileMenu({ isOpen, onClose }) {
       // Animate secondary items
       gsap.fromTo(
         secondaryItemsRef.current,
-        { opacity: 0, x: 20 },
+        { opacity: 0, x: xDirectionSecondary },
         {
           opacity: 1,
           x: 0,
@@ -53,7 +68,7 @@ export default function MobileMenu({ isOpen, onClose }) {
         },
       )
     }
-  }, [isOpen])
+  }, [isOpen, isMobile])
 
   return (
     <AnimatePresence>
@@ -69,16 +84,18 @@ export default function MobileMenu({ isOpen, onClose }) {
             className="fixed inset-0 bg-black/40 backdrop-blur-md z-50"
           />
 
-          {/* Sidebar Panel - Full Width on Mobile like Gucci */}
+          {/* Sidebar Panel - Responsive Direction */}
           <motion.div
-            initial={{ x: "100%" }}
+            initial={{ x: isMobile ? "100%" : "-100%" }}
             animate={{ x: 0 }}
-            exit={{ x: "100%" }}
+            exit={{ x: isMobile ? "100%" : "-100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 300 }}
-            className="fixed top-0 right-0 bottom-0 w-full md:w-96 bg-white shadow-2xl z-50 flex flex-col"
+            className={`fixed top-0 ${isMobile ? "right-0" : "left-0"} bottom-0 w-full md:w-96 bg-white shadow-2xl z-50 flex flex-col`}
           >
-            {/* Close Button Only - No Menu Text (Gucci Style) */}
-            <div className="flex justify-end items-center p-6">
+            {/* Close Button - Align based on menu side */}
+            <div
+              className={`flex ${isMobile ? "justify-end" : "justify-start"} items-center p-6`}
+            >
               <motion.button
                 onClick={onClose}
                 whileHover={{ scale: 0.9, rotate: 90 }}

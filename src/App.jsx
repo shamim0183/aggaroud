@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react"
 import { Toaster } from "react-hot-toast"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import Layout from "./components/Layout"
+import SmoothScroll from "./components/SmoothScroll"
 import { AuthProvider } from "./contexts/AuthContext"
 import { CartProvider } from "./contexts/CartContext"
 import { WishlistProvider } from "./contexts/WishlistContext"
@@ -46,80 +47,86 @@ function App() {
     <AuthProvider>
       <WishlistProvider>
         <CartProvider>
-          <BrowserRouter>
-            <ScrollToTopOnRouteChange />
-            <Toaster
-              position="top-right"
-              toastOptions={{
-                duration: 2000,
-                style: {
-                  background: "#1a1a1a",
-                  color: "#fff",
-                  padding: "16px",
-                  borderRadius: "4px",
-                },
-                success: {
-                  iconTheme: {
-                    primary: "#C9A55A",
-                    secondary: "#fff",
+          {/* ========== SMOOTH SCROLL FEATURE ========== */}
+          {/* Professional smooth scrolling (Lenis) */}
+          {/* To DISABLE: Remove <SmoothScroll> wrapper */}
+          <SmoothScroll>
+            <BrowserRouter>
+              <ScrollToTopOnRouteChange />
+              <Toaster
+                position="top-right"
+                toastOptions={{
+                  duration: 2000,
+                  style: {
+                    background: "#1a1a1a",
+                    color: "#fff",
+                    padding: "16px",
+                    borderRadius: "4px",
                   },
-                },
-              }}
-            />
-            <Suspense fallback={<PageLoader />}>
-              <Routes>
-                <Route element={<Layout />}>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/products" element={<Products />} />
-                  <Route path="/products/:id" element={<ProductDetail />} />
-                  <Route path="/men" element={<Men />} />
-                  <Route path="/women" element={<Women />} />
-                  <Route path="/cart" element={<Cart />} />
-                  <Route path="/contact" element={<Contact />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/shipping" element={<Shipping />} />
-                  <Route path="/privacy" element={<Privacy />} />
-                  <Route path="/terms" element={<Terms />} />
-                  <Route path="/login" element={<Login />} />
-                  {/* Protected Account Routes */}
-                  <Route
-                    path="/orders"
-                    element={
-                      <ProtectedRoute>
-                        <MyOrders />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/account"
-                    element={
-                      <ProtectedRoute>
-                        <AccountSettings />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/address-book"
-                    element={
-                      <ProtectedRoute>
-                        <AddressBook />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/wishlist"
-                    element={
-                      <ProtectedRoute>
-                        <Wishlist />
-                      </ProtectedRoute>
-                    }
-                  />
-                  {/* 404 Catch-all */}
-                  <Route path="*" element={<NotFound />} />
-                </Route>
-              </Routes>
-            </Suspense>
-          </BrowserRouter>
+                  success: {
+                    iconTheme: {
+                      primary: "#C9A55A",
+                      secondary: "#fff",
+                    },
+                  },
+                }}
+              />
+              <Suspense fallback={<PageLoader />}>
+                <Routes>
+                  <Route element={<Layout />}>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/products" element={<Products />} />
+                    <Route path="/products/:id" element={<ProductDetail />} />
+                    <Route path="/men" element={<Men />} />
+                    <Route path="/women" element={<Women />} />
+                    <Route path="/cart" element={<Cart />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/shipping" element={<Shipping />} />
+                    <Route path="/privacy" element={<Privacy />} />
+                    <Route path="/terms" element={<Terms />} />
+                    <Route path="/login" element={<Login />} />
+                    {/* Protected Account Routes */}
+                    <Route
+                      path="/orders"
+                      element={
+                        <ProtectedRoute>
+                          <MyOrders />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/account"
+                      element={
+                        <ProtectedRoute>
+                          <AccountSettings />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/address-book"
+                      element={
+                        <ProtectedRoute>
+                          <AddressBook />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/wishlist"
+                      element={
+                        <ProtectedRoute>
+                          <Wishlist />
+                        </ProtectedRoute>
+                      }
+                    />
+                    {/* 404 Catch-all */}
+                    <Route path="*" element={<NotFound />} />
+                  </Route>
+                </Routes>
+              </Suspense>
+            </BrowserRouter>
+          </SmoothScroll>
+          {/* ========================================= */}
         </CartProvider>
       </WishlistProvider>
     </AuthProvider>

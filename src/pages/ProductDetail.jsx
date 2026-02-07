@@ -1,7 +1,8 @@
 import { ArrowLeft, Heart, ShoppingCart } from "lucide-react"
 import { useEffect, useState } from "react"
+import { toast } from "react-hot-toast"
 import { Link, useParams } from "react-router-dom"
-import toast from "react-hot-toast"
+import ImageZoom from "../components/ImageZoom"
 import { useAuth } from "../contexts/AuthContext"
 import { useCart } from "../contexts/CartContext"
 import { useWishlist } from "../contexts/WishlistContext"
@@ -22,13 +23,17 @@ export default function ProductDetail() {
   useEffect(() => {
     async function loadProduct() {
       try {
-        console.log("🔍 Loading product from Shopify:", id)
         const products = await fetchProducts()
-        const foundProduct = products.find((p) => p.id.includes(id) || p.shopifyId === id)
+        const foundProduct = products.find(
+          (p) => p.id.includes(id) || p.shopifyId === id,
+        )
 
         if (foundProduct) {
-          console.log("✅ Product found:", foundProduct.name)
           setProduct(foundProduct)
+          // Initialize selected variant when product loads
+          if (foundProduct.variants && foundProduct.variants.length > 0) {
+            setSelectedVariant(foundProduct.variants[0])
+          }
         } else {
           setError("Product not found")
         }
@@ -42,6 +47,13 @@ export default function ProductDetail() {
 
     loadProduct()
   }, [id])
+
+  // Reset selected image when variant changes to show variant's primary image
+  useEffect(() => {
+    if (selectedVariant) {
+      setSelectedImage(0)
+    }
+  }, [selectedVariant])
 
   if (loading) {
     return (
@@ -73,28 +85,25 @@ export default function ProductDetail() {
 
   // Get variants from product data (sizes like 6ml, 12ml)
   const variants = product.variants || [
-    { id: '6ml', size: '6ml', price: product.price },
-    { id: '12ml', size: '12ml', price: product.price * 1.8 }
+    { id: "6ml", size: "6ml", price: product.price },
+    { id: "12ml", size: "12ml", price: product.price * 1.8 },
   ]
-
-  // Initialize selected variant on first render
-  if (selectedVariant === null && variants.length > 0) {
-    setSelectedVariant(variants[0])
-  }
 
   const handleAddToCart = () => {
     const productWithVariant = {
       ...product,
       selectedVariant: selectedVariant,
-      price: selectedVariant ? selectedVariant.price : product.price
+      price: selectedVariant ? selectedVariant.price : product.price,
     }
     addToCart(productWithVariant, quantity)
-    toast.success(`${quantity}x ${product.name} (${selectedVariant?.size || 'Default'}) added to cart!`)
+    toast.success(
+      `${quantity}x ${product.name} (${selectedVariant?.size || "Default"}) added to cart!`,
+    )
   }
 
   // Parse description to extract sections (main description, TOP, HEART, BASE)
   const parseDescription = (description) => {
-    if (!description) return { main: '', top: '', heart: '', base: '' }
+    if (!description) return { main: "", top: "", heart: "", base: "" }
 
     // Try to extract sections even if they're on the same line
     const topMatch = description.match(/TOP[:\s]*(.*?)(?=HEART|BASE|$)/is)
@@ -105,20 +114,16 @@ export default function ProductDetail() {
     const mainMatch = description.match(/^(.*?)(?=TOP|HEART|BASE|$)/is)
 
     return {
-      main: mainMatch ? mainMatch[1].trim() : '',
-      top: topMatch ? topMatch[1].trim() : '',
-      heart: heartMatch ? heartMatch[1].trim() : '',
-      base: baseMatch ? baseMatch[1].trim() : '',
+      main: mainMatch ? mainMatch[1].trim() : "",
+      top: topMatch ? topMatch[1].trim() : "",
+      heart: heartMatch ? heartMatch[1].trim() : "",
+      base: baseMatch ? baseMatch[1].trim() : "",
     }
   }
 
-  const parsedDescription = product ? parseDescription(product.description) : { main: '', top: '', heart: '', base: '' }
-
-  // Debug: Log parsed sections
-  if (product) {
-    console.log('📝 Original description:', product.description)
-    console.log('✂️ Parsed sections:', parsedDescription)
-  }
+  const parsedDescription = product
+    ? parseDescription(product.description)
+    : { main: "", top: "", heart: "", base: "" }
 
   const handleToggleWishlist = () => {
     // Check if user is logged in
@@ -141,8 +146,13 @@ export default function ProductDetail() {
 
   const isFavorite = product ? isInWishlist(product.id) : false
 
-
-  const images = product.images || [product.image]
+  // Get current display image based on selected variant or product images
+  const displayImages = selectedVariant?.image
+    ? [
+        selectedVariant.image,
+        ...product.images.filter((img) => img !== selectedVariant.image),
+      ]
+    : product.images || [product.image]
 
   return (
     <div className="min-h-screen py-32 px-8">
@@ -160,20 +170,32 @@ export default function ProductDetail() {
           {/* Image Gallery */}
           <div>
             <div className="bg-gray-100 rounded-lg overflow-hidden mb-4 aspect-square">
-              <img
-                src={images[selectedImage]}
+              {/* ========== IMAGE ZOOM FEATURE ========== */}
+              {/* Professional zoom-on-hover (Amazon/Nike style) */}
+              {/* To DISABLE: Comment out <ImageZoom> and uncomment <img> below */}
+
+              <ImageZoom
+                src={displayImages[selectedImage]}
+                alt={product.name}
+              />
+
+              {/* FALLBACK: Regular image (uncomment if disabling zoom) */}
+              {/* <img
+                src={displayImages[selectedImage]}
                 alt={product.name}
                 className="w-full h-full object-cover"
-              />
+              /> */}
+              {/* ========================================= */}
             </div>
-            {images.length > 1 && (
+            {displayImages.length > 1 && (
               <div className="grid grid-cols-4 gap-4">
-                {images.map((img, index) => (
+                {displayImages.map((img, index) => (
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
-                    className={`aspect-square rounded-lg overflow-hidden cursor-pointer ${selectedImage === index ? "ring-2 ring-brand-gold" : ""
-                      }`}
+                    className={`aspect-square rounded-lg overflow-hidden cursor-pointer ${
+                      selectedImage === index ? "ring-2 ring-brand-gold" : ""
+                    }`}
                   >
                     <img
                       src={img}
@@ -212,10 +234,11 @@ export default function ProductDetail() {
                     <button
                       key={variant.id}
                       onClick={() => setSelectedVariant(variant)}
-                      className={`cursor-pointer px-6 py-2.5 border-2 text-sm uppercase tracking-wider transition-all ${selectedVariant?.id === variant.id
-                        ? 'bg-black text-white border-black'
-                        : 'border-gray-300 hover:border-black bg-white text-black'
-                        }`}
+                      className={`cursor-pointer px-6 py-2.5 border-2 text-sm uppercase tracking-wider transition-all ${
+                        selectedVariant?.id === variant.id
+                          ? "bg-black text-white border-black"
+                          : "border-gray-300 hover:border-black bg-white text-black"
+                      }`}
                     >
                       {variant.size}
                     </button>
@@ -259,12 +282,13 @@ export default function ProductDetail() {
               </button>
               <button
                 onClick={handleToggleWishlist}
-                className={`px-4 py-4 border transition-colors cursor-pointer ${isFavorite
-                  ? 'border-brand-gold bg-brand-gold/10 text-brand-gold'
-                  : 'border-gray-300 hover:border-brand-gold'
-                  }`}
+                className={`px-4 py-4 border transition-colors cursor-pointer ${
+                  isFavorite
+                    ? "border-brand-gold bg-brand-gold/10 text-brand-gold"
+                    : "border-gray-300 hover:border-brand-gold"
+                }`}
               >
-                <Heart size={20} fill={isFavorite ? 'currentColor' : 'none'} />
+                <Heart size={20} fill={isFavorite ? "currentColor" : "none"} />
               </button>
             </div>
 
@@ -282,7 +306,9 @@ export default function ProductDetail() {
             </div> */}
 
             {/* Fragrance Notes - Parsed from Shopify Description */}
-            {(parsedDescription.top || parsedDescription.heart || parsedDescription.base) && (
+            {(parsedDescription.top ||
+              parsedDescription.heart ||
+              parsedDescription.base) && (
               <div className="border-t border-gray-200 pt-8 mt-6">
                 <h3 className="uppercase tracking-wider text-sm font-semibold mb-6">
                   Fragrance Notes
